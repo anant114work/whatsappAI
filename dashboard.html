@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp AI Bot Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f0f0f0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: #25d366; color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .stat-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .main-content { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .chat-list, .send-message { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .chat-item { padding: 15px; border-bottom: 1px solid #eee; cursor: pointer; }
+        .chat-item:hover { background: #f5f5f5; }
+        .chat-item.active { background: #e3f2fd; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        .btn { background: #25d366; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        .btn:hover { background: #128c7e; }
+        .message { margin: 10px 0; padding: 10px; border-radius: 10px; }
+        .message.sent { background: #dcf8c6; margin-left: 20%; }
+        .message.received { background: #fff; margin-right: 20%; border: 1px solid #ddd; }
+        .chat-messages { max-height: 400px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; margin-bottom: 15px; }
+        .status { padding: 5px 10px; border-radius: 15px; font-size: 12px; }
+        .status.active { background: #4caf50; color: white; }
+        .status.inactive { background: #f44336; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 WhatsApp AI Bot Dashboard</h1>
+            <p>Phone: +919355421616 | Status: <span id="bot-status" class="status active">Active</span></p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Total Messages</h3>
+                <h2 id="total-messages">0</h2>
+            </div>
+            <div class="stat-card">
+                <h3>Active Chats</h3>
+                <h2 id="active-chats">0</h2>
+            </div>
+            <div class="stat-card">
+                <h3>AI Responses</h3>
+                <h2 id="ai-responses">0</h2>
+            </div>
+            <div class="stat-card">
+                <h3>Success Rate</h3>
+                <h2 id="success-rate">100%</h2>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="chat-list">
+                <h3>Recent Chats</h3>
+                <div id="chat-list-container">
+                    <!-- Chat items will be loaded here -->
+                </div>
+                <button class="btn" onclick="loadChats()">Refresh Chats</button>
+            </div>
+
+            <div class="send-message">
+                <h3>Send Message</h3>
+                <div class="form-group">
+                    <label>Phone Number:</label>
+                    <input type="text" id="phone-input" placeholder="+918882443789" value="+918882443789">
+                </div>
+                <div class="form-group">
+                    <label>Message:</label>
+                    <textarea id="message-input" rows="4" placeholder="Type your message here..."></textarea>
+                </div>
+                <button class="btn" onclick="sendMessage()">Send Message</button>
+                
+                <h3 style="margin-top: 30px;">Chat Messages</h3>
+                <div id="chat-messages" class="chat-messages">
+                    <p>Select a chat or send a message to start conversation</p>
+                </div>
+                
+                <div class="form-group">
+                    <input type="text" id="reply-input" placeholder="Type reply...">
+                    <button class="btn" onclick="sendReply()" style="margin-top: 10px;">Send Reply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentChat = null;
+        let chats = {};
+
+        // Load chats from server
+        async function loadChats() {
+            try {
+                const response = await fetch('/api/chats');
+                const data = await response.json();
+                displayChats(data.chats || []);
+                updateStats(data.stats || {});
+            } catch (error) {
+                console.error('Error loading chats:', error);
+            }
+        }
+
+        // Display chats in the list
+        function displayChats(chatList) {
+            const container = document.getElementById('chat-list-container');
+            container.innerHTML = '';
+            
+            chatList.forEach(chat => {
+                const chatItem = document.createElement('div');
+                chatItem.className = 'chat-item';
+                chatItem.onclick = () => selectChat(chat);
+                chatItem.innerHTML = `
+                    <strong>${chat.phone}</strong>
+                    <p>${chat.lastMessage}</p>
+                    <small>${new Date(chat.timestamp).toLocaleString()}</small>
+                `;
+                container.appendChild(chatItem);
+            });
+        }
+
+        // Select a chat
+        function selectChat(chat) {
+            currentChat = chat;
+            document.getElementById('phone-input').value = chat.phone;
+            loadChatMessages(chat.phone);
+            
+            // Update active chat styling
+            document.querySelectorAll('.chat-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Load messages for a specific chat
+        async function loadChatMessages(phone) {
+            try {
+                const response = await fetch(`/api/messages/${encodeURIComponent(phone)}`);
+                const data = await response.json();
+                displayMessages(data.messages || []);
+            } catch (error) {
+                console.error('Error loading messages:', error);
+            }
+        }
+
+        // Display messages
+        function displayMessages(messages) {
+            const container = document.getElementById('chat-messages');
+            container.innerHTML = '';
+            
+            messages.forEach(msg => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${msg.type}`;
+                messageDiv.innerHTML = `
+                    <p>${msg.text}</p>
+                    <small>${new Date(msg.timestamp).toLocaleString()}</small>
+                `;
+                container.appendChild(messageDiv);
+            });
+            
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Send message
+        async function sendMessage() {
+            const phone = document.getElementById('phone-input').value;
+            const message = document.getElementById('message-input').value;
+            
+            if (!phone || !message) {
+                alert('Please enter phone number and message');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/send-message', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone, message })
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    document.getElementById('message-input').value = '';
+                    loadChatMessages(phone);
+                    loadChats();
+                    alert('Message sent successfully!');
+                } else {
+                    alert('Failed to send message: ' + result.error);
+                }
+            } catch (error) {
+                alert('Error sending message: ' + error.message);
+            }
+        }
+
+        // Send reply
+        async function sendReply() {
+            const phone = document.getElementById('phone-input').value;
+            const message = document.getElementById('reply-input').value;
+            
+            if (!phone || !message) {
+                alert('Please select a chat and enter a reply');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/send-message', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone, message })
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    document.getElementById('reply-input').value = '';
+                    loadChatMessages(phone);
+                    loadChats();
+                } else {
+                    alert('Failed to send reply: ' + result.error);
+                }
+            } catch (error) {
+                alert('Error sending reply: ' + error.message);
+            }
+        }
+
+        // Update statistics
+        function updateStats(stats) {
+            document.getElementById('total-messages').textContent = stats.totalMessages || 0;
+            document.getElementById('active-chats').textContent = stats.activeChats || 0;
+            document.getElementById('ai-responses').textContent = stats.aiResponses || 0;
+            document.getElementById('success-rate').textContent = (stats.successRate || 100) + '%';
+        }
+
+        // Load chats on page load
+        loadChats();
+        
+        // Auto-refresh every 30 seconds
+        setInterval(loadChats, 30000);
+    </script>
+</body>
+</html>
