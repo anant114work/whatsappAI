@@ -70,7 +70,7 @@
                     <textarea id="message-input" rows="4" placeholder="Type your message here..."></textarea>
                 </div>
                 <button class="btn" onclick="sendMessage()">Send Message</button>
-                <button class="btn" onclick="sendTemplate()" style="background: #ff9800; margin-left: 10px;">Send Template (New Users)</button>
+                <button class="btn" onclick="sendTemplate()" style="background: #ff9800; margin-left: 10px;">Send Welcome</button>
                 
                 <div id="result" style="margin-top: 15px; padding: 10px; border-radius: 5px; display: none;"></div>
                 
@@ -176,15 +176,20 @@
                     body: JSON.stringify({ phone })
                 });
                 
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
                 const result = await response.json();
                 if (result.success) {
-                    showResult('Template message sent! User can now reply.', 'success');
+                    showResult(result.message || 'Welcome message sent!', 'success');
                     loadChats();
                 } else {
-                    showResult('Failed to send template: ' + result.error, 'error');
+                    showResult('Failed to send welcome: ' + result.error, 'error');
                 }
             } catch (error) {
-                showResult('Error sending template: ' + error.message, 'error');
+                console.error('Template error:', error);
+                showResult('Error: ' + error.message, 'error');
             }
         }
 
