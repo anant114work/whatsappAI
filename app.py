@@ -100,7 +100,7 @@ def api_send_template():
     if not phone:
         return jsonify({'success': False, 'error': 'Phone number required'})
     
-    # Send a welcome message
+    # Send a welcome message  
     message = "Hello! Welcome to our AI assistant. Reply with any message to start chatting with our AI bot. 🤖"
     success = send_whatsapp_message(phone, message)
     
