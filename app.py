@@ -47,21 +47,45 @@ def verify_webhook():
 @app.route('/webhook', methods=['POST'])
 def handle_webhook():
     data = request.get_json()
-    print(f"Received webhook data: {data}")
+    print(f"📨 Received webhook data: {data}")
     
-    # Handle Tata Telecom Smartflo webhook format
-    if data.get('type') == 'message':
-        handle_message(data)
-    elif data.get('messages'):  # Alternative format
-        for message in data.get('messages', []):
-            handle_message(message)
-    elif data.get('object') == 'whatsapp_business_account':  # Meta format fallback
-        for entry in data.get('entry', []):
-            for change in entry.get('changes', []):
-                if change.get('field') == 'messages':
-                    messages = change.get('value', {}).get('messages', [])
-                    for message in messages:
-                        handle_message(message)
+    # Extract phone and message from Tata format
+    phone = data.get('from') or data.get('phone')
+    message_text = None
+    
+    if data.get('text'):
+        message_text = data.get('text', {}).get('body') or data.get('text')
+    elif data.get('message'):
+        message_text = data.get('message')
+    
+    print(f"📱 Phone: {phone}, Message: {message_text}")
+    
+    if phone and message_text:
+        try:
+            print(f"🤖 Getting AI response for: {message_text}")
+            
+            # Get AI response
+            response = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": "You are a helpful WhatsApp assistant. Keep responses brief and friendly."},
+                    {"role": "user", "content": message_text}
+                ],
+                max_tokens=150
+            )
+            
+            ai_response = response.choices[0].message.content
+            print(f"💬 AI Response: {ai_response}")
+            
+            # Send reply back
+            success = send_message(phone, ai_response)
+            print(f"🚀 Send result: {success}")
+            
+        except Exception as e:
+            print(f"❌ Error processing message: {e}")
+            send_message(phone, "Sorry, I encountered an error. Please try again.")
+    else:
+        print("⚠️ Could not extract phone/message from webhook data")
     
     return jsonify({'status': 'success', 'message': 'received'})
 
@@ -110,33 +134,54 @@ def handle_message(message):
         print(f"Could not extract message data: {message}")
 
 def send_message(to, message):
-    # Use Tata Telecom's send message API
-    url = "https://api.smartflo.ai/v1/send"
+    # Try multiple Tata Telecom API endpoints for sending messages
+    endpoints = [
+        f"https://graph.facebook.com/v18.0/{WHATSAPP_PHONE_NUMBER_ID}/messages",
+        "https://api.smartflo.ai/v1/messages",
+        "https://api.smartflo.ai/send"
+    ]
+    
     headers = {
         'Authorization': f'Bearer {WHATSAPP_TOKEN}',
         'Content-Type': 'application/json'
     }
     
-    payload = {
-        'to': to,
-        'message': message,
-        'type': 'text'
-    }
+    # Different payload formats to try
+    payloads = [
+        {
+            'messaging_product': 'whatsapp',
+            'to': to,
+            'text': {'body': message}
+        },
+        {
+            'to': to,
+            'type': 'text',
+            'text': {'body': message}
+        },
+        {
+            'phone': to,
+            'message': message,
+            'type': 'text'
+        }
+    ]
     
-    try:
-        response = requests.post(url, headers=headers, json=payload)
-        print(f"Send API Response: {response.status_code} - {response.text}")
-        
-        if response.status_code in [200, 201]:
-            print("Message sent successfully")
-            return True
-        else:
-            print(f"Failed to send message: {response.text}")
-            return False
-            
-    except Exception as e:
-        print(f"Error sending message: {e}")
-        return False
+    for endpoint in endpoints:
+        for payload in payloads:
+            try:
+                print(f"Trying to send to {endpoint} with payload: {payload}")
+                response = requests.post(endpoint, headers=headers, json=payload)
+                print(f"Response: {response.status_code} - {response.text}")
+                
+                if response.status_code in [200, 201]:
+                    print(f"✅ Message sent successfully via {endpoint}")
+                    return True
+                    
+            except Exception as e:
+                print(f"❌ Error with {endpoint}: {e}")
+                continue
+    
+    print("❌ Failed to send message with all endpoints")
+    return False
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 3000))
