@@ -148,6 +148,18 @@ def handle_webhook():
     print(f"📱 Phone: {phone}, Message: {message_text}")
     
     if phone and message_text:
+        print(f"📨 Received from {phone}: {message_text}")
+        
+        # Store received message
+        if phone not in messages_db:
+            messages_db[phone] = []
+        
+        messages_db[phone].append({
+            'text': message_text,
+            'type': 'received',
+            'timestamp': datetime.now().isoformat()
+        })
+        
         try:
             print(f"🤖 Getting AI response for: {message_text}")
             
@@ -164,13 +176,35 @@ def handle_webhook():
             ai_response = response.choices[0].message.content
             print(f"💬 AI Response: {ai_response}")
             
-            # Send reply back
-            success = send_message(phone, ai_response)
+            # Send reply back using Tata API
+            success = send_whatsapp_message(phone, ai_response)
             print(f"🚀 Send result: {success}")
+            
+            if success:
+                # Store AI response
+                messages_db[phone].append({
+                    'text': ai_response,
+                    'type': 'sent',
+                    'timestamp': datetime.now().isoformat()
+                })
+                
+                # Update chat info
+                chats_db[phone] = {
+                    'lastMessage': message_text,
+                    'timestamp': datetime.now().isoformat()
+                }
             
         except Exception as e:
             print(f"❌ Error processing message: {e}")
-            send_message(phone, "Sorry, I encountered an error. Please try again.")
+            error_msg = "Sorry, I encountered an error. Please try again."
+            send_whatsapp_message(phone, error_msg)
+            
+            # Store error message
+            messages_db[phone].append({
+                'text': error_msg,
+                'type': 'sent',
+                'timestamp': datetime.now().isoformat()
+            })
     else:
         print("⚠️ Could not extract phone/message from webhook data")
     
