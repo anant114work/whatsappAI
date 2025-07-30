@@ -1,0 +1,39 @@
+TATA TELECOM PANEL CONFIGURATION
+=====================================
+
+STEP 1: Get your public URL
+Run this command in terminal:
+python -c "from pyngrok import ngrok; ngrok.set_auth_token('30aIC76ukxRypLNs0ZL29BZtKK2_7jnVbHjm1XbPsstUZ3BLE'); tunnel = ngrok.connect(3000); print('URL:', tunnel.public_url + '/webhook')"
+
+STEP 2: Fill Tata Panel with these settings:
+
+Name: WhatsApp OpenAI Bot
+Access ID: (leave blank)
+Type: REST
+Method: POST
+URL: [YOUR_NGROK_URL]/webhook (from step 1)
+
+HEADERS:
+Content-Type: application/json
+
+BODY SETTINGS:
+Select body type: application/json
+Map the entire request body: ✓ CHECK THIS BOX
+
+SAMPLE BODY (for reference):
+{
+  "from": "{{phone}}",
+  "text": {
+    "body": "{{message}}"
+  }
+}
+
+RESPONSE MAPPING:
+Success Response Mapping: Entire Response
+Error Response Mapping: (leave blank)
+
+VARIABLES (if needed):
+phone - sender phone number
+message - message content
+
+=====================================

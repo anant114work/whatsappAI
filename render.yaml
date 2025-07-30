@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: whatsapp-openai-bot
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    envVars:
+      - key: WHATSAPP_TOKEN
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZU51bWJlciI6Iis5MTkzNTU0MjE2MTYiLCJwaG9uZU51bWJlcklkIjoiMTAwNTUxNjc5NzU0ODg3IiwiaWF0IjoxNjg2OTA5MDMzfQ.39dmKyOC6dSv83jdtw4dezjpX6NnLkdHueZHenVybkc
+      - key: WHATSAPP_PHONE_NUMBER_ID
+        value: 100551679754887
+      - key: VERIFY_TOKEN
+        value: tata_webhook_verify_2024
+      - key: OPENAI_API_KEY
+        value: YOUR_OPENAI_API_KEY_HERE
