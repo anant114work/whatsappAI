@@ -104,7 +104,6 @@ def send_whatsapp_message(phone, message):
     payload = {
         'to': phone,
         'type': 'text',
-        'source': 'external',
         'text': {'body': message}
     }
     

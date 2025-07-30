@@ -70,8 +70,13 @@
                     <textarea id="message-input" rows="4" placeholder="Type your message here..."></textarea>
                 </div>
                 <button class="btn" onclick="sendMessage()">Send Message</button>
+                <button class="btn" onclick="sendTemplate()" style="background: #ff9800; margin-left: 10px;">Send Template (New Users)</button>
                 
                 <div id="result" style="margin-top: 15px; padding: 10px; border-radius: 5px; display: none;"></div>
+                
+                <div style="margin-top: 15px; padding: 10px; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 5px;">
+                    <strong>Note:</strong> For new users, send a template message first to initiate conversation.
+                </div>
             </div>
         </div>
     </div>
@@ -156,6 +161,33 @@
         // Load chats on page load
         loadChats();
         
+        async function sendTemplate() {
+            const phone = document.getElementById('phone-input').value;
+            
+            if (!phone) {
+                showResult('Please enter phone number', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/send-template', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone })
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    showResult('Template message sent! User can now reply.', 'success');
+                    loadChats();
+                } else {
+                    showResult('Failed to send template: ' + result.error, 'error');
+                }
+            } catch (error) {
+                showResult('Error sending template: ' + error.message, 'error');
+            }
+        }
+
         // Auto-refresh every 30 seconds
         setInterval(loadChats, 30000);
     </script>
