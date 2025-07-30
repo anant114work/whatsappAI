@@ -110,52 +110,33 @@ def handle_message(message):
         print(f"Could not extract message data: {message}")
 
 def send_message(to, message):
-    # Try multiple Tata Telecom API endpoints
-    endpoints = [
-        "https://api.smartflo.ai/v1/messages",
-        "https://api.smartflo.ai/messages",
-        "https://smartflo.ai/api/v1/messages"
-    ]
-    
+    # Use Tata Telecom's send message API
+    url = "https://api.smartflo.ai/v1/send"
     headers = {
         'Authorization': f'Bearer {WHATSAPP_TOKEN}',
         'Content-Type': 'application/json'
     }
     
-    # Try different payload formats
-    payloads = [
-        {
-            'to': to,
-            'type': 'text',
-            'text': {'body': message}
-        },
-        {
-            'phone': to,
-            'message': message,
-            'type': 'text'
-        },
-        {
-            'recipient': to,
-            'content': message,
-            'message_type': 'text'
-        }
-    ]
+    payload = {
+        'to': to,
+        'message': message,
+        'type': 'text'
+    }
     
-    for endpoint in endpoints:
-        for payload in payloads:
-            try:
-                response = requests.post(endpoint, headers=headers, json=payload)
-                if response.status_code in [200, 201]:
-                    print(f"Message sent successfully via {endpoint}")
-                    return True
-                else:
-                    print(f"Failed with {endpoint}: {response.status_code} - {response.text}")
-            except Exception as e:
-                print(f"Error with {endpoint}: {e}")
-                continue
-    
-    print("Failed to send message with all endpoints")
-    return False
+    try:
+        response = requests.post(url, headers=headers, json=payload)
+        print(f"Send API Response: {response.status_code} - {response.text}")
+        
+        if response.status_code in [200, 201]:
+            print("Message sent successfully")
+            return True
+        else:
+            print(f"Failed to send message: {response.text}")
+            return False
+            
+    except Exception as e:
+        print(f"Error sending message: {e}")
+        return False
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 3000))
