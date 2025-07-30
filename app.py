@@ -92,6 +92,38 @@ def api_send_message():
     else:
         return jsonify({'success': False, 'error': 'Failed to send message'})
 
+@app.route('/api/send-template', methods=['POST'])
+def api_send_template():
+    data = request.get_json()
+    phone = data.get('phone')
+    
+    if not phone:
+        return jsonify({'success': False, 'error': 'Phone number required'})
+    
+    # Send a welcome message
+    message = "Hello! Welcome to our AI assistant. Reply with any message to start chatting with our AI bot. 🤖"
+    success = send_whatsapp_message(phone, message)
+    
+    if success:
+        # Store message in database
+        if phone not in messages_db:
+            messages_db[phone] = []
+        
+        messages_db[phone].append({
+            'text': message,
+            'type': 'sent',
+            'timestamp': datetime.now().isoformat()
+        })
+        
+        chats_db[phone] = {
+            'lastMessage': message,
+            'timestamp': datetime.now().isoformat()
+        }
+        
+        return jsonify({'success': True, 'message': 'Welcome message sent!'})
+    else:
+        return jsonify({'success': False, 'error': 'Failed to send message. User must message you first.'})
+
 def send_whatsapp_message(phone, message):
     """Send message using Tata Telecom API"""
     url = "https://wb.omni.tatatelebusiness.com/whatsapp-cloud/messages"
