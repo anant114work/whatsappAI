@@ -109,14 +109,23 @@ def get_chats():
 
 @app.route('/api/send', methods=['POST'])
 def send_manual_message():
-    data = request.json
-    phone = data.get('phone')
-    message = data.get('message')
-    
-    if send_whatsapp_message(phone, message):
-        add_message(phone, message, 'sent', 'manual')
-        return jsonify({'success': True})
-    return jsonify({'success': False})
+    try:
+        data = request.json
+        phone = data.get('phone')
+        message = data.get('message')
+        
+        if not phone or not message:
+            return jsonify({'success': False, 'error': 'Phone and message required'})
+        
+        success = send_whatsapp_message(phone, message)
+        if success:
+            add_message(phone, message, 'sent', 'manual')
+            return jsonify({'success': True})
+        else:
+            return jsonify({'success': False, 'error': 'Failed to send message'})
+    except Exception as e:
+        print(f"Error in send_manual_message: {e}")
+        return jsonify({'success': False, 'error': str(e)})
 
 @app.route('/api/toggle-ai', methods=['POST'])
 def toggle_ai():
@@ -247,30 +256,66 @@ def get_ai_response(message):
         return "Sorry, I'm having trouble responding right now."
 
 def send_whatsapp_message(to, message):
+    """Send WhatsApp message using Tata Telecom API"""
     url = "https://wb.omni.tatatelebusiness.com/whatsapp-cloud/messages"
+    
+    # Correct headers format for Tata Telecom API
     headers = {
-        'Authorization': WHATSAPP_TOKEN,
+        'Authorization': WHATSAPP_TOKEN,  # Direct token, not Bearer
         'Content-Type': 'application/json'
     }
+    
+    # Correct payload format based on API docs
     payload = {
         "to": to,
         "type": "text",
         "source": "external",
-        "text": {"body": message}
+        "text": {
+            "body": message
+        }
     }
     
     try:
         print(f"Sending message to {to}: {message}")
-        print(f"Using URL: {url}")
+        print(f"URL: {url}")
+        print(f"Headers: {headers}")
         print(f"Payload: {json.dumps(payload, indent=2)}")
         
         response = requests.post(url, headers=headers, json=payload)
         print(f"Response status: {response.status_code}")
+        print(f"Response headers: {dict(response.headers)}")
         print(f"Response body: {response.text}")
         
-        return response.status_code == 200
+        # Check for success
+        if response.status_code == 200:
+            try:
+                if response.text.strip():
+                    response_data = response.json()
+                    if response_data.get('id'):
+                        print(f"Message sent successfully, ID: {response_data.get('id')}")
+                        return True
+                else:
+                    print("Empty response but status 200 - considering success")
+                    return True
+            except json.JSONDecodeError:
+                print(f"Non-JSON response: {response.text[:100]}")  
+                return response.status_code == 200
+        
+        # Handle different error responses
+        if response.status_code == 401:
+            print("Authentication failed - check your WHATSAPP_TOKEN")
+        elif response.status_code == 400:
+            print("Bad request - check message format")
+        elif response.status_code == 424:
+            print("WhatsApp API error - check phone number permissions")
+        
+        return False
+        
+    except requests.exceptions.RequestException as e:
+        print(f"Network error sending message: {e}")
+        return False
     except Exception as e:
-        print(f"Error sending message: {e}")
+        print(f"Unexpected error sending message: {e}")
         return False
 
 DASHBOARD_HTML = '''
