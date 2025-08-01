@@ -1,0 +1,6221 @@
+Skip to main content
+Tata Telecom Logo
+WhatsApp
+RCS
+WhatsApp Lite Plan
+API Docs
+Session API
+Whatsapp Voice Call API
+RCS API
+
+Search...
+TATA Tele Business Services Open APIs
+ v1 
+OAS 3.0
+/openapi/openapi.json
+Servers
+
+https://wb.omni.tatatelebusiness.com
+
+Authorize
+Template Messages
+
+
+POST
+/templates
+Create Template Message
+
+
+Use this endpoint to create WhatsApp template messages for reaching out to users.
+
+Template messages can be type of:
+
+Text Message
+Media Templates
+Interactive Templates
+Location Templates
+Multi-Product Templates
+Catalog Templates
+Order Details Templates
+Checkout Button Templates
+Order Status Templates
+Coupon Code Templates
+Carousel Templates
+Form Templates
+Limited-Time Offer Templates
+Authentication Templates
+Voice Call Templates
+Call Permission Request Templates
+Text Message
+
+Send simple text templates to users or you can send personalized template messages using the variables
+
+Media Templates
+
+Here you can send Media Templates, which can be Video, Image or Document.
+
+Interactive Templates
+
+Here you can send the templates with Buttons. There are two types of predefined buttons:
+
+Call-to-Action — Allows your customer to call a phone number and visit a website.
+Quick Reply — Allows your customer to return a simple text message.
+These buttons can be attached to text messages or media messages.
+
+Location Templates
+
+Location headers appear as generic maps at the top of the template and are useful for order tracking, delivery updates, ride hailing pickup/dropoff, locating physical stores, etc. You can share the location to users using the lattitude and longitude of the location.
+
+Multi-Product Templates
+
+MPM templates can be used to open marketing conversations. They allow you to showcase up to 30 products from your ecommerce catalog, organized in up to 10 sections, in a single message.
+
+Catalog Templates
+
+Catalog templates are marketing templates that allow you to showcase your product catalog entirely within WhatsApp. Catalog templates display a product thumbnail header image of your choice and custom body text, along with a fixed text header and fixed text sub-header.
+
+Order Details Templates
+
+Order details message template is one of the interactive message template that extends the call-to-action button to support sending order details as template and provides richer experience.
+
+Checkout Button Templates
+
+Checkout button templates are marketing templates that can showcase one or more products along with corresponding checkout buttons that WhatsApp users can use to make purchases without leaving the WhatsApp client.
+
+Order Status Templates
+
+Order status template allows you to provide order status updates to customers, such as processing, shipped, or completed, ensuring clear and timely communication with customers.
+
+Coupon Code Templates
+
+Coupon code templates are marketing templates that display a single copy code button. When tapped, the code is copied to the customer's clipboard.
+
+Carousel Templates
+
+Carousel templates allow you to send a single text message accompanied by a set of up to 10 carousel cards in a horizontally scrollable view.
+
+Form Templates
+
+Form Template enables businesses to offer a richer, more engaging user experience that can help customers get things done faster on WhatsApp without necessarily needing to switch to another app, or visit a website.
+
+Limited-Time Offer Templates
+
+Limited-time offer templates allow you to display expiration dates and running countdown timers for offer codes in template messages, making it easy for you to communicate time-bound offers and drive customer engagement.
+
+Authentication Templates
+
+Copy code authentication templates allow you to send a one-time password or code along with a copy code button to your users.
+
+Voice Call Templates
+
+Voice Call Templates allow WhatsApp consumers to initiate a voice call directly by clicking the button in the template.
+
+Call Permission Request Templates
+
+Call Permission Request Templates allow you to create templates that enable WhatsApp users to grant consent for receiving calls.
+
+Note: For all Marketing type templates, you can set a Time-to-Live (TTL) value to define the delivery window, only if you have onboarded the MM Lite API. TTL must be specified in seconds, with a minimum of 43,200 seconds (12 hours) and a maximum of 2,592,000 seconds (30 days). The recommended TTL value is 86,400 seconds (24 hours).
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Examples: 
+Text
+Example Value
+Schema
+{
+  "name": "{{template_name}}",
+  "language": "en",
+  "category": "MARKETING",
+  "components": [
+    {
+      "type": "BODY",
+      "text": "message-text"
+    },
+    {
+      "type": "FOOTER",
+      "text": "Footer text"
+    }
+  ]
+}
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Examples
+
+Text
+Example Value
+Schema
+{
+  "id": "bf07a16a-79ed-4e11-8aaa-b2025c2f57a2"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": "ERROR",
+  "status_code": 401,
+  "error": "UNAUTHORIZED",
+  "error_code": "AUTH_FAILED",
+  "description": "JWT - Auth-Token not valid"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:02:15 GMT
+Content-Type		string
+Example: application/json
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+
+POST
+/whatsapp-cloud/media/handle
+Upload Media Handler to Create Template
+
+
+Use this endpoint to upload a media file to Smartflo platform to create template with media handler.
+
+In this, first you need to upload a media file, which returns the media handler. Use this media handler and pass that to Create Template API.
+
+Upload media supports for Image, Video and Documents.
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+multipart/form-data
+file
+string($binary)
+Media File to be upload
+
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Examples
+
+Media Upload
+Example Value
+Schema
+{
+  "id": "5162148457229086"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": "ERROR",
+  "status_code": 401,
+  "error": "UNAUTHORIZED",
+  "error_code": "AUTH_FAILED",
+  "description": "JWT - Auth-Token not valid"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:02:15 GMT
+Content-Type		string
+Example: application/json
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+424	
+Failed Dependency
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "error": "UPLOAD_MEDIA",
+  "meta": {
+    "message": "Request failed with status code 413"
+  },
+  "message": "Can't upload media",
+  "traceId": "db5a6d48-5d36-461b-8864-4244e5f8cf8e"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:02:15 GMT
+Content-Type		string
+Example: application/json
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+
+POST
+/whatsapp-cloud/messages
+Send Template Message
+
+
+Use this endpoint to send template messages to the users. This API helps you to reach out the users with WhatsApp pre-approved template messages.
+
+Template messages can be type of:
+
+Text Message
+Media Templates
+Interactive Templates
+Location Templates
+Multi-Product Templates
+Catalog Templates
+Order Details Templates
+Checkout Button Templates
+Order Status Templates
+Coupon Code Templates
+Carousel Templates
+Form Templates
+Limited-time Offer Templates
+Authentication Templates
+Voice Call Templates
+Call Permission Request Templates
+Text Message
+
+Send simple text templates to users or you can send personalized template messages using the variables
+
+Media Templates
+
+Here you can send Media Templates, which can be Video, Image or Document.
+
+Interactive Templates
+
+Here you can send the templates with Buttons. There are two types of predefined buttons:
+
+Call-to-Action — Allows your customer to call a phone number and visit a website.
+Quick Reply — Allows your customer to return a simple text message.
+These buttons can be attached to text messages or media messages.
+
+Location Templates
+
+Location headers appear as generic maps at the top of the template and are useful for order tracking, delivery updates, ride hailing pickup/dropoff, locating physical stores, etc. You can share the location to users using the lattitude and longitude of the location.
+
+Multi-Product Templates
+
+MPM templates can be used to open marketing conversations. They allow you to showcase up to 30 products from your ecommerce catalog, organized in up to 10 sections, in a single message.
+
+Catalog Templates
+
+Catalog templates are marketing templates that allow you to showcase your product catalog entirely within WhatsApp. Catalog templates display a product thumbnail header image of your choice and custom body text, along with a fixed text header and fixed text sub-header.
+
+Order Details Templates
+
+Order details message template is one of the interactive message template that extends the call-to-action button to support sending order details as template and provides richer experience.
+
+Checkout Button Templates
+
+Checkout button templates are marketing templates that can showcase one or more products along with corresponding checkout buttons that WhatsApp users can use to make purchases without leaving the WhatsApp client.
+
+Order Status Templates
+
+Order status template allows you to provide order status updates to customers, such as processing, shipped, or completed, ensuring clear and timely communication with customers.
+
+Coupon Code Templates
+
+Coupon code templates are marketing templates that display a single copy code button. When tapped, the code is copied to the customer's clipboard.
+
+Carousel Templates
+
+Carousel templates allow you to send a single text message accompanied by a set of up to 10 carousel cards in a horizontally scrollable view
+
+Form Templates
+
+Form Template enables businesses to offer a richer, more engaging user experience that can help customers get things done faster on WhatsApp without necessarily needing to switch to another app, or visit a website.
+
+Limited-Time Offer Templates
+
+Limited-time offer templates allow you to display expiration dates and running countdown timers for offer codes in template messages, making it easy for you to communicate time-bound offers and drive customer engagement.
+
+Authentication Templates
+
+Copy code authentication templates allow you to send a one-time password or code along with a copy code button to your users.
+
+Voice Call Templates
+
+Voice Call Templates allow WhatsApp consumers to initiate a voice call directly by clicking the button in the template.
+
+Call Permission Request Templates
+
+Call Permission Request Templates allow you to send templates that enable WhatsApp users to grant consent for receiving calls.
+
+Request Header
+
+Key	Description
+Authorization	Here you need to add the access token for the Authorization. You can copy the Access Token from here .
+Request Body
+
+Key	Description
+to	Message recipient number. Must be in international format that includes country code. For example: +919090909090. Country code is must to add.
+type	Type of message. Value should be template
+template	The template object to build a message that will be sent
+name	It is template name. You can copy the template name from the Template manager that you want to send. example: hello_world
+language	It is a language code for the template. You can check the different language codes from here. Use the same language code that used while registering the template.
+components	It's a list of components that is created during the template creation like header, body Interactive buttons.
+components => type	Components types are body, button, header.
+subtype	Required when type=button. Not used for the other types.
+quick_reply: Refers to a previously created quick reply button that allows for the customer to return a predefined message.
+url: Refers to a previously created button that allows the customer to visit the URL generated by appending the text parameter to the predefined prefix URL in the template.
+index	Number of button index starting from 0, only if quick reply or dynamic URL buttons have been registered, It can have up to three quick reply buttons or only one dynamic URL button.
+example: 0
+minimum: 0
+maximum: 2
+parameters	This is required in case of a template registered with the variables.
+parameters => type	Parameter types are image, video, document,location, payload
+image => link	URL of a image sent in the header, only if having media URL. It is expected to be a valid URL starting with https:// or http://. Supported image types are PNG, JPG, JPEG. Maximum image size is 5MB.
+image => id	This is the id of a media, You can create id by uploading the image using the media APIs explained in this document. Use the media id fetched after uploading the media.
+video => link	URL of a video sent in the header, only if having media URL. It is expected to be a valid URL starting with https:// or http://. Supported video types are MP4, 3GPP. Maximum video size is 16MB.
+video => id	This is the id of a media, You can create id by uploading the video using the media APIs explained in this document. Use the media id fetched after uploading the media.
+document => link	URL of a document sent in the header, only if having media URL. It is expected to be a valid URL starting with https:// or http://. Supported document type is PDF. Maximum document size is 100MB
+document => id	This is the id of a media, You can create id by uploading the document using the media APIs explained in this document. Use the media id fetched after uploading the media.
+document => filename	Add a file name to show in WhatsApp.
+location => latitude	Lattitude of the location. For example: 23.0917101.
+location => longitude	Longitude of the location. For example: 72.5949363.
+location => name	Name of the place. For example: Fab India Store.
+location => address	Detailed address of the location For example: Mumbai Metropolitan Region
+payload	Payload of a quick reply button, only if quick reply buttons have been registered. It should be in text format. Add the keyword as payload.
+source	Source can be a label or string that indicates the platform or third party name from where the message is sent.
+metaData => custom_callback_data	custom_callback_data optional is field allows businesses to pass a custom tracking value which will be returned unprocessed in all subsequent webhook callbacks (sent, delivered, read, failed).
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Examples: 
+Text
+Example Value
+Schema
+{
+  "to": "{{Recipient-Phone-Number}}",
+  "type": "template",
+  "source": "external",
+  "template": {
+    "name": "welcome",
+    "language": {
+      "code": "en"
+    },
+    "components": []
+  },
+  "metaData": {
+    "custom_callback_data": "<optional_value>"
+  }
+}
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Examples
+
+Text
+Example Value
+Schema
+{
+  "id": "bf07a16a-79ed-4e11-8aaa-b2025c2f57a2"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": "ERROR",
+  "status_code": 401,
+  "error": "UNAUTHORIZED",
+  "error_code": "AUTH_FAILED",
+  "description": "JWT - Auth-Token not valid"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:02:15 GMT
+Content-Type		string
+Example: application/json
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+
+GET
+/templates/insights
+Get Template Insights
+
+
+This endpoint is used to get statistics of the template.
+
+Parameters
+Try it out
+Name	Description
+startDate *
+string
+(query)
+Initial date for viewing Insight statistics
+
+startDate
+endDate *
+string
+(query)
+End date for viewing Insight statistics
+
+endDate
+granularity
+string
+(query)
+Level of detail in which data is analyzed and presented.
+
+granularity
+templateIDs *
+string
+(query)
+List of templateIds whose Insights we wish to view
+
+templateIDs
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Examples
+
+data
+Example Value
+Schema
+{
+  "data": {
+    "granularity": "string",
+    "data_points": [
+      {
+        "template_id": "string",
+        "start": 0,
+        "end": 0,
+        "sent": 0,
+        "delivered": 0,
+        "read": 0
+      }
+    ]
+  },
+  "paging": {
+    "cursors": {
+      "before": "string",
+      "after": "string"
+    }
+  }
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 22 May 2024 06:36:54 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 208
+Connection		string
+Example: keep-alive
+vary		string
+Example: Origin
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Examples
+
+example-0
+Example Value
+Schema
+{
+  "error": "string",
+  "meta": {
+    "message": "string",
+    "code": 0
+  },
+  "message": "string",
+  "traceId": "string"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 22 May 2024 06:37:21 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 118
+Connection		string
+Example: keep-alive
+vary		string
+Example: Origin
+No links
+424	
+Failed Dependency
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "error": "GET_MESSAGE_TEMPLATE_INSIGHTS",
+  "meta": {
+    "message": "(#100) Param template_ids[0] is not a valid whatsapp_message_template ID",
+    "code": 100
+  },
+  "message": "Can't get the message template insights",
+  "traceId": "30c23aa6-5224-478b-97fd-b91f70ea8899"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 22 May 2024 06:36:54 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 247
+Connection		string
+Example: keep-alive
+vary		string
+Example: Origin
+No links
+
+GET
+/templates/insights-by-name
+Get Template Insights By Name And Language Code
+
+
+This endpoint is used to get statistics of template using name and language code.
+
+Parameters
+Try it out
+Name	Description
+name *
+string
+(query)
+Name of the template according to Meta
+
+name
+language *
+string
+(query)
+Language code of the template according to Meta
+
+Available values : af, sq, ar, ar_EG, ar_AE, ar_LB, ar_MA, ar_QA, az, be_BY, bn, bn_IN, bg, ca, zh_CN, zh_HK, zh_TW, hr, cs, da, prs_AF, nl, nl_BE, en, en_GB, en_US, en_AE, en_AU, en_CA, en_GH, en_IE, en_IN, en_JM, en_MY, en_NZ, en_QA, en_SG, en_UG, en_ZA, et, fil, fi, fr, fr_BE, fr_CA, fr_CH, fr_CI, fr_MA, ka, de, de_AT, de_CH, el, gu, ha, he, hi, hu, id, ga, it, ja, kn, kk, rw_RW, ko, ky_KG, lo, lv, lt, mk, ms, ml, mr, nb, ps_AF, fa, pl, pt_BR, pt_PT, pa, ro, ru, sr, si_LK, sk, sl, es, es_AR, es_CL, es_CO, es_CR, es_DO, es_EC, es_HN, es_MX, es_PA, es_PE, es_ES, es_UY, sw, sv, ta, te, th, tr, uk, ur, uz, vi, zu
+
+
+en
+startDate *
+string
+(query)
+Initial date for viewing Insight statistics
+
+2021-01-01
+endDate *
+string
+(query)
+End date for viewing Insight statistics
+
+2021-01-31
+granularity
+string
+(query)
+Level of detail in which data is analyzed and presented.
+
+Available values : DAILY
+
+
+DAILY
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Examples
+
+success
+Example Value
+Schema
+{
+  "data": [
+    {
+      "granularity": "DAILY",
+      "data_points": [
+        {
+          "template_id": "817405930290117",
+          "start": 1716336000,
+          "end": 1716422400,
+          "sent": 0,
+          "delivered": 0,
+          "read": 0
+        },
+        {
+          "template_id": "817405930290117",
+          "start": 1708732800,
+          "end": 1708819200,
+          "sent": 0,
+          "delivered": 0,
+          "read": 0
+        }
+      ]
+    }
+  ],
+  "paging": {
+    "cursors": {
+      "before": "MAZDZD",
+      "after": "ODk5"
+    }
+  }
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 22 May 2024 06:36:54 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 208
+Connection		string
+Example: keep-alive
+vary		string
+Example: Origin
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Examples
+
+Invalid granularity
+Example Value
+Schema
+{
+  "message": "Bad Request Exception",
+  "details": [
+    "granularity must be one of the following values: DAILY"
+  ],
+  "traceId": "f0cd28e2-78df-419c-99e6-5df4dfd55274"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 22 May 2024 06:37:21 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 118
+Connection		string
+Example: keep-alive
+vary		string
+Example: Origin
+No links
+404	
+Not Found
+
+Media type
+
+application/json
+Examples
+
+Invalid name or language
+Example Value
+Schema
+{
+  "error": "MESSAGE_TEMPLATE_NOT_FOUND",
+  "meta": {},
+  "message": "Template with name: hello_world and language: en not found",
+  "traceId": "f8b932af-eb55-4030-8937-19a64b7726bd"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Mon, 23 Jun 2025 08:07:26 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 168
+Connection		string
+Example: keep-alive
+No links
+424	
+Failed Dependency
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "error": "GET_MESSAGE_TEMPLATE_INSIGHTS",
+  "meta": {
+    "message": "(#100) Param template_ids[0] is not a valid whatsapp_message_template ID",
+    "code": 100
+  },
+  "message": "Can't get the message template insights",
+  "traceId": "30c23aa6-5224-478b-97fd-b91f70ea8899"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 22 May 2024 06:36:54 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 247
+Connection		string
+Example: keep-alive
+vary		string
+Example: Origin
+No links
+
+POST
+/templates/insights/optin
+Opt-in
+
+
+Use this endpoint to enable template insights once.
+
+Parameters
+Try it out
+No parameters
+
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "success": true
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 22 May 2024 12:29:04 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 16
+Connection		string
+Example: keep-alive
+vary		string
+Example: Origin
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": "ERROR",
+  "status_code": 401,
+  "error": "UNAUTHORIZED",
+  "error_code": "AUTH_FAILED",
+  "description": "authentication : JWT - Auth-Token not valid or expired"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 22 May 2024 12:12:01 GMT
+Content-Type		string
+Example: application/json
+Transfer-Encoding		string
+Example: chunked
+Connection		string
+Example: keep-alive
+No links
+Opt-in/ Opt-out
+
+
+POST
+/business/optin_optout
+Opt-in/ Opt-out
+
+
+Use this endpoint to get the opt-ins and opt-out of the users to sent the messages on WhatsApp.
+
+To start receiving messages on WhatsApp, users need to provide explicit consent through a third-party channel. This channel can include various communication methods like your website, mobile app, missed call, IVR, email, SMS, retail location, contact center, and WhatsApp session-based messages.
+
+The opt-in process must be explicit, requiring a user action, such as entering a phone number or selecting a checkbox to confirm their consent.
+
+Ensure transparent opt-in messaging so that users are informed about the types of messages they are subscribing to.
+
+Businesses are responsible for maintaining opt-ins and should be prepared to provide this information if requested by WhatsApp.
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Examples: 
+Opt-out with Auto optin days
+Example Value
+Schema
+{
+  "recipient_numbers": [
+    "{{RECIPIENT-PHONE_NUMBER}}",
+    "{{RECIPIENT-PHONE_NUMBER}}"
+  ],
+  "type": "optout",
+  "auto_optin_in_days": 1
+}
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Examples
+
+Opt out
+Example Value
+Schema
+{
+  "success": true
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": "ERROR",
+  "status_code": 401,
+  "error": "UNAUTHORIZED",
+  "error_code": "AUTH_FAILED",
+  "description": "JWT - Auth-Token not valid"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:02:15 GMT
+Content-Type		string
+Example: application/json
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+Media Upload
+
+
+POST
+/whatsapp-cloud/media
+Upload Media
+
+
+Use this endpoint to upload a media file to Smartflo platform to send media using the media id.
+
+In this, first you need to upload a media file, which returns the media id. Use this media id and pass that to Send Message Template API. This approach can be used when you don't have the public facing URL of the media
+
+Upload media supports for Image, Video and Documents.
+
+NOTE: The media uploaded here will be stored for 30 days in the system after 30 days the media id will get expired
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+multipart/form-data
+file
+string($binary)
+Media File to be upload
+
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Examples
+
+Media Upload
+Example Value
+Schema
+{
+  "id": "5162148457229086"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": "ERROR",
+  "status_code": 401,
+  "error": "UNAUTHORIZED",
+  "error_code": "AUTH_FAILED",
+  "description": "JWT - Auth-Token not valid"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:02:15 GMT
+Content-Type		string
+Example: application/json
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+424	
+Failed Dependency
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "error": "UPLOAD_MEDIA",
+  "meta": {
+    "message": "Request failed with status code 413"
+  },
+  "message": "Can't upload media",
+  "traceId": "db5a6d48-5d36-461b-8864-4244e5f8cf8e"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:02:15 GMT
+Content-Type		string
+Example: application/json
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+
+GET
+/whatsapp-cloud/media/download/{mediaId}
+Download Media
+
+
+This endpoint is used to get the uploaded media using the media id. You can get the URL for the media and download that file.
+
+Parameters
+Try it out
+Name	Description
+mediaId *
+string
+(path)
+Media ID to download
+
+mediaId
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Examples
+
+Download Media
+Example Value
+Schema
+{
+  "url": "https://s3-prod-smartflo-wa-uploads.s3.ap-south-1.amazonaws.com/1677836099076_yUiMQSj0wd?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQQ7ALCDWPOW2MCIA%2F20230303%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20230303T093459Z&X-Amz-Expires=900&X-Amz-Signature=5206fcff8ee126b6eabf21dd1852ab30456dd6aa1361994306cfbe876afdb48e&X-Amz-SignedHeaders=host",
+  "mime_type": "image/jpeg"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": "ERROR",
+  "status_code": 401,
+  "error": "UNAUTHORIZED",
+  "error_code": "AUTH_FAILED",
+  "description": "JWT - Auth-Token not valid"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:02:15 GMT
+Content-Type		string
+Example: application/json
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+424	
+Failed Dependency
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "error": "GET_MEDIA_URL",
+  "meta": {
+    "message": "Unsupported get request. Object with ID '5162148457229860' does not exist, cannot be loaded due to missing permissions, or does not support this operation. Please read the Graph API documentation at https://developers.facebook.com/docs/graph-api",
+    "code": 100
+  },
+  "message": "Can't retrieve media url",
+  "traceId": "cd23023b-c0be-4b04-a86a-dd08f78b9112"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:02:15 GMT
+Content-Type		string
+Example: application/json
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+
+DELETE
+/whatsapp-cloud/media/{mediaId}
+Delete Media
+
+
+Use this endpoint to delete the media from Smartflo using the media id.
+
+Parameters
+Try it out
+Name	Description
+mediaId *
+string
+(path)
+Media ID to delete
+
+mediaId
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Examples
+
+Delete Media
+Example Value
+Schema
+{
+  "success": true
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": "ERROR",
+  "status_code": 401,
+  "error": "UNAUTHORIZED",
+  "error_code": "AUTH_FAILED",
+  "description": "JWT - Auth-Token not valid"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:02:15 GMT
+Content-Type		string
+Example: application/json
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+424	
+Failed Dependency
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "error": "DELETE_MEDIA",
+  "meta": {
+    "message": "Unsupported delete request. Object with ID '5162148457229086' does not exist, cannot be loaded due to missing permissions, or does not support this operation. Please read the Graph API documentation at https://developers.facebook.com/docs/graph-api",
+    "code": 100
+  },
+  "message": "Can't delete media",
+  "traceId": "ab252994-ca64-4e52-ae14-33e3b168c600"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:02:15 GMT
+Content-Type		string
+Example: application/json
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+Webhooks
+
+
+POST
+Messages
+Receive User Messages
+
+
+Receive User Message
+Receive messages from Meta's platform when a user interacts with your application.Use this webhook to process and respond to these incoming user messages.
+
+Validating Payloads
+We sign all Event Notification payloads with a sha256 signature and include the signature in the request's x-hub-signature-256 header. You don't have to validate the payload, but you should.
+
+To validate the payload:
+Generate a sha256 signature using the payload and your partner token.
+Compare your signature to the signature in the x-hub-signature-256 header.
+If the signatures match, the payload is genuine.
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Examples: 
+Text
+Example Value
+Schema
+{
+  "contacts": [
+    {
+      "profile": {
+        "name": "User Name"
+      },
+      "wa_id": "919999999999"
+    }
+  ],
+  "messages": {
+    "from": "919999999999",
+    "id": "wamid.HBgMOTE5MTA2MDg5MzQzFQIAEhggRTQzMEI1QjA5QkU0RkIwREI1MzQyQThENUQ4NkQ4RTMA",
+    "timestamp": "1744109205",
+    "text": {
+      "body": "hi"
+    },
+    "type": "text"
+  },
+  "businessPhoneNumber": "+15551305682",
+  "id": "268e8b65-59a2-45df-9006-bd4b2aedbfdc"
+}
+
+POST
+Callbacks
+Receive Meta Callbacks
+
+
+Receive Meta Callbacks
+Receive callbacks from Meta's platform like sent, read, delivered and failed.
+
+Validating Payloads
+We sign all Event Notification payloads with a sha256 signature and include the signature in the request's x-hub-signature-256 header. You don't have to validate the payload, but you should.
+
+To validate the payload:
+Generate a sha256 signature using the payload and your partner token.
+Compare your signature to the signature in the x-hub-signature-256 header.
+If the signatures match, the payload is genuine.
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Examples: 
+Sent
+Example Value
+Schema
+{
+  "statuses": [
+    {
+      "id": "wamid.HBgMOTE4NDkwMDI5MTA1FQIAERgSRDkwQjFEQURDMEI5MkExNUY3AA==",
+      "status": "sent",
+      "timestamp": "1729161280",
+      "recipient_id": "919999999999",
+      "conversation": {
+        "id": "5184572b71a3fa2a8fec67a1ac017f6b",
+        "expiration_timestamp": "1729234980",
+        "origin": {
+          "type": "service"
+        }
+      },
+      "pricing": {
+        "billable": true,
+        "pricing_model": "PMP",
+        "category": "service",
+        "type": "regular"
+      },
+      "custom_callback_data": "<optional_value>"
+    }
+  ],
+  "businessPhoneNumber": "+15551305682",
+  "id": "6a5c5340-3744-45ad-989f-10a954dd9c50"
+}
+Overview
+Home
+Onboarding
+Guides
+Template Manager
+Campaign Manager
+Live Chat
+Legal
+Privacy Policy
+Terms & Conditions
+Data Retention and Destruction Policy
+Copyright © 2025 Tata Teleservices Ltd.
+
+Skip to main content
+Tata Telecom Logo
+WhatsApp
+RCS
+WhatsApp Lite Plan
+API Docs
+Session API
+Whatsapp Voice Call API
+RCS API
+
+Search...
+TATA Tele Business Services Open APIs
+ v1 
+OAS 3.0
+/openapi/openapi_1.json
+Servers
+
+https://wb.omni.tatatelebusiness.com
+
+Authorize
+Send Message
+
+
+POST
+/whatsapp-cloud/messages
+Send Session Message
+
+
+Use this endpoint to send session messages to the users. This API helps you to reach out the users with WhatsApp free-form session messages.
+
+Session messages can be type of:
+
+Text Message
+Media Messages
+Interactive Messages
+Location Messages
+Text Message
+
+Send simple text messages to users.
+
+Media Messages
+
+Here you can send Media messages, which can be Video, Image or Document.
+
+Interactive Messages
+
+WhatsApp provides various Interactive Messages using which you can share the Rich Media contetnt to your users and start easy interaction on WhatsApp. Here are the various types of Interactive Messages:
+
+Message with Reply Button — Where you can send a message with max 3 buttons on WhatsApp, user will click the button and start interaction with business.
+List Message — Here you can send a message with llist of options(max allowed 10). This can be used when a business wants to share a menu or various service on WhatsApp.
+WhatsApp Forms — Here, businesses can define, configure, and customize messages with rich interactions that give customers more structure in the way they communicate.
+Order Details — In this, businesses can send customers a bill, so the customer can complete their order by paying the business without having to leave WhatsApp.
+Location Messages
+
+WhatsApp provides two types of Location Message:
+
+Location Message — In this, location appear as generic maps at the top of the message and are useful for order tracking, delivery updates, ride hailing pickup/dropoff, locating physical stores, etc. You can share the location to users using the lattitude and longitude of the location.
+Location Request — In this, you can ask to share the location on WhatsApp, where user can pin their location on WhatsApp or can share the current location with business.
+Request Header
+
+Key	Description
+Authorization	Here you need to add the access token for the Authorization. You can copy the Access Token from here .
+Request Body
+
+Key	Description
+to	Message recipient number. Must be in international format that includes country code. For example: +919090909090. Country code is must to add.
+type	Type of message. Value should be text, image,audio,document,video,contacts,location,interactive
+text => body	This is a message that you want to send. Required for text messages.
+text => preview_url	Optional. Set to true to have the WhatsApp Messenger and WhatsApp Business apps attempt to render a link preview of any URL in the body text string. URLs must begin with http:// or https://. If multiple URLs are in the body text string, only the first URL will be rendered.
+image => link	URL of a image sent in the header, only if having media URL. It is expected to be a valid URL starting with https:// or http://. Supported image types are PNG, JPG, JPEG. Maximum image size is 5MB.
+image => id	This is the id of a media, You can create id by uploading the image using the media APIs explained in this document. Use the media id fetched after uploading the media.
+video => link	URL of a video sent in the header, only if having media URL. It is expected to be a valid URL starting with https:// or http://. Supported video types are MP4, 3GPP. Maximum video size is 16MB.
+video => id	This is the id of a media, You can create id by uploading the video using the media APIs explained in this document. Use the media id fetched after uploading the media.
+document => link	URL of a document sent in the header, only if having media URL. It is expected to be a valid URL starting with https:// or http://. Supported document type is PDF. Maximum document size is 100MB
+document => id	This is the id of a media, You can create id by uploading the document using the media APIs explained in this document. Use the media id fetched after uploading the media.
+document => filename	Add a file name to show in WhatsApp.
+document => caption	Optional. Media asset caption.
+location => latitude	Lattitude of the location. For example: 23.0917101.
+location => longitude	Longitude of the location. For example: 72.5949363.
+location => name	Name of the place. For example: Fab India Store.
+location => address	Detailed address of the location For example: Mumbai Metropolitan Region
+contacts => name	Required.
+Full contact name formatted as a name object. The object can contain the following field:
+formatted_name(string) – Required. Full name, as it normally appears.
+first_name(string) – Optional*. First name.
+last_name(string) – Optional*. Last name.
+middle_name(string) – Optional*. Middle name.
+suffix(string) – Optional*. Name suffix.
+prefix(string) – Optional*. Name prefix.
+*At least one of the optional parameters needs to be included along with the formatted_name parameter.
+contacts => phones	Contact phone number(s) formatted as a phone object. The object can contain the following fields:
+phonestring – Optional. Automatically populated with the wa_id value as a formatted phone number.
+interactive => type	Required. The type of interactive message you want to send. Supported value:
+button: Use for Reply Buttons.
+catalog_message: Use for Catalog Messages.
+list: Use for List Messages.
+product:Use for Single-Product Messages.
+product_list: Use for Multi-Product Messages.
+flow: Use for Flows Messages.
+order_details: Use for Order & Payment.
+order_status: Use for order status message.
+source	Source can a label or string that indicates the platform or third party name from where the message is sent.
+metaData => custom_callback_data	custom_callback_data optional is field allows businesses to pass a custom tracking value which will be returned unprocessed in all subsequent webhook callbacks (sent, delivered, read, failed).
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Examples: 
+Text Message
+Example Value
+Schema
+{
+  "to": "{{Recipient-Phone-Number}}",
+  "type": "text",
+  "source": "external",
+  "text": {
+    "body": "Send Your Text Message by Using This! 😇"
+  },
+  "metaData": {
+    "custom_callback_data": "<optional_value>"
+  }
+}
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Examples
+
+Text
+Example Value
+Schema
+{
+  "id": "bf07a16a-79ed-4e11-8aaa-b2025c2f57a2"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": "ERROR",
+  "status_code": 401,
+  "error": "UNAUTHORIZED",
+  "error_code": "AUTH_FAILED",
+  "description": "JWT - Auth-Token not valid"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:02:15 GMT
+Content-Type		string
+Example: application/json
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+Overview
+Home
+Onboarding
+Guides
+Template Manager
+Campaign Manager
+Live Chat
+Legal
+Privacy Policy
+Terms & Conditions
+Data Retention and Destruction Policy
+Copyright © 2025 Tata Teleservices Ltd.
+
+Skip to main content
+Tata Telecom Logo
+WhatsApp
+RCS
+WhatsApp Lite Plan
+API Docs
+Session API
+Whatsapp Voice Call API
+RCS API
+
+Search...
+Whatsapp Voice Call APIs
+ 1.0.0 
+OAS 3.0
+/openapi/whatsapp-voice-call-api.json
+Servers
+
+https://wb.omni.tatatelebusiness.com
+
+Authorize
+Calls
+
+
+POST
+/whatsapp-cloud/calls
+Send Call Updates
+
+
+Send Call Updates
+This API allows you to control and update the state of WhatsApp calls. It supports initiating outbound calls, accepting or rejecting incoming calls, and terminating ongoing sessions.
+
+🔄 Supported Call Actions
+Action	Description	Required Fields
+connect	Initiate an outgoing call	to, session.sdp_type = "offer", session.sdp
+pre_accept	Pre-accept an incoming call (ICE warm-up)	call_id, session.sdp_type = "answer", session.sdp
+accept	Accept an incoming call	call_id, session.sdp_type = "answer", session.sdp
+reject	Reject an incoming call	call_id
+terminate	Terminate an ongoing call	call_id
+📤 Request Payload Format
+The payload must include the messaging product type (whatsapp) and vary in required fields based on the action.
+
+For outgoing calls, provide the to phone number and an SDP offer in the session object.
+For incoming call responses, provide the call_id and an SDP answer (for accept/pre_accept).
+For reject or terminate, only the call_id is necessary.
+📥 SDP Exchange via session
+The session object includes WebRTC SDP data:
+
+sdp_type: Indicates if the payload is an SDP "offer" or "answer".
+sdp: The SDP string (must be properly escaped sdp).
+Example:
+
+"session": {
+  "sdp_type": "offer",
+  "sdp": "{...SDP string...}"
+}
+📬 Response Format
+For outgoing calls (action: connect), you will receive the following response:
+{
+  "calls": [
+    {
+      "id": "wacid.ABGGFjFVU2AfAgo6V-Hc5eCgK5Gh"
+    }
+  ]
+}
+For all other call actions (pre_accept, accept, reject, terminate), the response will be:
+{
+  "messaging_product": "whatsapp",
+  "success": true
+}
+Parameters
+Try it out
+Name	Description
+Authorization
+string
+(header)
+Example : {{AUTH_TOKEN}}
+
+{{AUTH_TOKEN}}
+Request body
+
+application/json
+Examples: 
+Pre-accept an incoming call
+Example Value
+Schema
+{
+  "messaging_product": "whatsapp",
+  "call_id": "wacid.ABGGFjFVU2AfAgo6V-Hc5eCgK5Gh",
+  "action": "pre_accept",
+  "session": {
+    "sdp_type": "answer",
+    "sdp": "{...SDP answer...}"
+  }
+}
+Responses
+Code	Description	Links
+201	
+Success
+
+Media type
+
+application/json
+Controls Accept header.
+Examples
+
+Success
+Example Value
+Schema
+{
+  "messaging_product": "whatsapp",
+  "success": true
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Examples
+
+Auth token invalid
+Example Value
+Schema
+{
+  "error": "AUTH_TOKEN_INVALID",
+  "meta": {},
+  "message": "Auth-Token not valid or expired",
+  "traceId": "d7b61242-da15-410a-afdc-baf72b1edf64"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "error": "AUTH_TOKEN_NOT_FOUND",
+  "meta": {},
+  "message": "Auth-Token not found in header",
+  "traceId": "d7b61242-da15-410a-afdc-baf72b1edf64"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+424	
+Failed Dependency (WebDAV) (RFC 4918)
+
+For details on possible errors and their corresponding codes, refer to the Meta Error Codes documentation.
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "error": "WHATSAPP_CALL_UPDATE",
+  "meta": {
+    "message": "(#138000) Calling APIs are not enabled for this phone number",
+    "code": 138000,
+    "type": "OAuthException",
+    "error_data": {
+      "messaging_product": "whatsapp",
+      "details": "Can't send whatsapp call update"
+    },
+    "fbtrace_id": "AMuEbCNBbbfCNt1TGJqpjJg"
+  },
+  "message": "Can't send whatsapp call update",
+  "traceId": "db5a6d48-5d36-461b-8864-4244e5f8cf8e"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+Settings
+
+
+POST
+/whatsapp-cloud/settings
+Update phone number settings
+
+
+Update phone number settings
+This endpoint is used to update phone number related settings
+
+Parameters
+Try it out
+Name	Description
+Authorization
+string
+(header)
+Example : {{AUTH_TOKEN}}
+
+{{AUTH_TOKEN}}
+Request body
+
+application/json
+Examples: 
+Display Call Icon in business profile
+Example Value
+Schema
+{
+  "calling": {
+    "call_icon_visibility": "DEFAULT"
+  }
+}
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "success": true
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Examples
+
+Auth token invalid
+Example Value
+Schema
+{
+  "error": "AUTH_TOKEN_INVALID",
+  "meta": {},
+  "message": "Auth-Token not valid or expired",
+  "traceId": "d7b61242-da15-410a-afdc-baf72b1edf64"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "error": "AUTH_TOKEN_NOT_FOUND",
+  "meta": {},
+  "message": "Auth-Token not found in header",
+  "traceId": "d7b61242-da15-410a-afdc-baf72b1edf64"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+424	
+Failed Dependency (WebDAV) (RFC 4918)
+
+For details on possible errors and their corresponding codes, refer to the Meta Error Codes documentation.
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "error": "PHONE_NUMBER_SETTINGS_UPDATE",
+  "meta": {
+    "message": "(#10) Application does not have permission for this action",
+    "code": 10,
+    "type": "OAuthException",
+    "error_data": {
+      "messaging_product": "whatsapp",
+      "details": "Can't update the message templates"
+    },
+    "fbtrace_id": "AMuEbCNBbbfCNt1TGJqp"
+  },
+  "message": "Error while updating phone number settings",
+  "traceId": "db5a6d48-5d36-461b-8864-4244e5f8cf8c"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+
+GET
+/whatsapp-cloud/settings
+Get phone number settings
+
+
+Get phone number settings
+This endpoint is used to get phone number related settings
+
+Parameters
+Try it out
+Name	Description
+Authorization
+string
+(header)
+Example : {{AUTH_TOKEN}}
+
+{{AUTH_TOKEN}}
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "calling": {
+    "status": "ENABLED",
+    "call_icon_visibility": "DEFAULT"
+  }
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Examples
+
+Auth token invalid
+Example Value
+Schema
+{
+  "error": "AUTH_TOKEN_INVALID",
+  "meta": {},
+  "message": "Auth-Token not valid or expired",
+  "traceId": "d7b61242-da15-410a-afdc-baf72b1edf64"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "error": "AUTH_TOKEN_NOT_FOUND",
+  "meta": {},
+  "message": "Auth-Token not found in header",
+  "traceId": "d7b61242-da15-410a-afdc-baf72b1edf64"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+424	
+Failed Dependency (WebDAV) (RFC 4918)
+
+For details on possible errors and their corresponding codes, refer to the Meta Error Codes documentation.
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "error": "PHONE_NUMBER_SETTINGS",
+  "meta": {
+    "message": "(#10) Application does not have permission for this action",
+    "code": 10,
+    "type": "OAuthException",
+    "error_data": {
+      "messaging_product": "whatsapp",
+      "details": "Error while getting phone number settings"
+    },
+    "fbtrace_id": "AMuEbCNBbbfCNt1TGJqpj"
+  },
+  "message": "Error while getting phone number settings",
+  "traceId": "db5a6d48-5d36-461b-8864-4244e5f8cf8d"
+}
+Headers:
+Name	Description	Type
+Date		string
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+Content-Type		string
+Example: application/json; charset=utf-8
+Content-Length		integer
+Example: 329
+Connection		string
+Example: keep-alive
+No links
+Webhooks
+
+Overview
+Home
+Onboarding
+Guides
+Template Manager
+Campaign Manager
+Live Chat
+Legal
+Privacy Policy
+Terms & Conditions
+Data Retention and Destruction Policy
+Copyright © 2025 Tata Teleservices Ltd.
+
+Skip to main content
+Tata Telecom Logo
+WhatsApp
+RCS
+WhatsApp Lite Plan
+API Docs
+Session API
+Whatsapp Voice Call API
+RCS API
+
+Search...
+RCS API
+ 1.0.0 
+OAS 3.0
+/openapi/rcs-api.json
+Servers
+
+https://api.omni.tatatelebusiness.com
+
+Authorize
+Messages
+
+
+POST
+/rcs/messages
+Send Message
+
+
+Send RCS Message
+Use this endpoint to send message to the users.
+
+RCS messages can be type of:
+
+Plain Text
+Plain Text with Suggested Replies
+Plain Text with Suggested Actions - Open Url
+Plain Text with Suggested Actions - Dialer Action
+Plain Text with Suggested Actions - Show Location
+Plain Text with Suggested Actions - Share Location
+Plain Text with Suggested Actions - Create Calendar Event
+Card
+Card with Suggested Replies
+Card with Suggested Actions - Open Url
+Card with Suggested Actions - Dialer Action
+Card with Suggested Actions - Show Location
+Card with Suggested Actions - Share Location
+Card with Suggested Actions - Create Calendar Event
+Carousel
+Carousel with Suggested Replies
+Carousel with Suggested Actions - Open Url
+Carousel with Suggested Actions - Dialer Action
+Carousel with Suggested Actions - Show Location
+Carousel with Suggested Actions - Share Location
+Carousel with Suggested Actions - Create Calendar Event
+Request
+Method: POST
+URL:rcs/messages
+Request Body For RCS Messages
+to: Message recipient number. Must be in international format that includes country code. For example: +919090909090. Country code is must to add.
+content: Content of the message.
+source: Source can be a label or string that indicates the platform or third party name from where the message is sent.
+Important Note:
+A rich card can include up to 4 buttons
+A carousel must include minimum 2 cards and maximum 10 cards
+Each card in the carousel can have a maximum of 4 buttons
+Response
+Upon successful execution, the response will include the ID of the sent message.
+
+id (string): The ID of the sent message.
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Examples: 
+Plain Text
+Example Value
+Schema
+{
+  "to": "+91xxxxxxxxxx",
+  "content": {
+    "plainText": "hello!!!!"
+  },
+  "source": "api"
+}
+Responses
+Code	Description	Links
+200	
+OK
+
+Media type
+
+application/json
+Controls Accept header.
+Examples
+
+Success
+Example Value
+Schema
+{
+  "id": "cbc63f46-e9df-4722-94c5-47150f77eb49"
+}
+Headers:
+Name	Description	Type
+content-type		string
+Example: application/json; charset=utf-8
+content-length		integer
+Example: 45
+Date		string
+Example: Fri, 02 Sep 2022 04:39:49 GMT
+Connection		string
+Example: keep-alive
+Keep-Alive		string
+Example: timeout=72
+No links
+400	
+Bad Request
+
+Media type
+
+application/json
+Examples
+
+Invalid Phone Number
+Example Value
+Schema
+{
+  "title": "Invalid Phone number",
+  "code": 400
+}
+Headers:
+Name	Description	Type
+content-type		string
+Example: application/json; charset=utf-8
+content-length		integer
+Example: 45
+Date		string
+Example: Fri, 25 Nov 2022 07:12:55 GMT
+Connection		string
+Example: keep-alive
+Keep-Alive		string
+Example: timeout=72
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": "ERROR",
+  "status_code": 401,
+  "error": "UNAUTHORIZED",
+  "error_code": "AUTH_FAILED",
+  "description": "authentication : JWT - Auth-Token not valid or expired"
+}
+Headers:
+Name	Description	Type
+content-type		string
+Example: application/json; charset=utf-8
+content-length		integer
+Example: 45
+Date		string
+Example: Fri, 25 Nov 2022 07:12:55 GMT
+Connection		string
+Example: keep-alive
+Keep-Alive		string
+Example: timeout=61
+No links
+403	
+Forbidden
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "message": "Bot conversation limit is exceeded",
+  "error": "Forbidden",
+  "statusCode": 403
+}
+Headers:
+Name	Description	Type
+content-type		string
+Example: application/json; charset=utf-8
+content-length		integer
+Example: 45
+Date		string
+Example: Fri, 25 Nov 2022 07:12:55 GMT
+Connection		string
+Example: keep-alive
+Keep-Alive		string
+Example: timeout=61
+No links
+Webhooks
+
+
+POST
+Messages
+Receive User Messages
+
+
+Receive User Message
+Receive messages from RCS when a user sends messages to you. Use this webhook to process and respond to these incoming user messages.
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Examples: 
+PostBack
+Example Value
+{
+  "userPhoneNumber": "+91xxxxxxxxxx",
+  "botId": "65b7341d6b7825728b8bfeb9",
+  "metaData": {
+    "orgMsgId": "211d9bd5-7807-4dd4-bcda-6b9637cd68f2",
+    "orgMsgSendTime": "2024-11-06T11:28:22.136012Z"
+  },
+  "entityType": "USER_MESSAGE",
+  "entity": {
+    "messageId": "Mx9Yg7Je63R56OhZAPQgtO=w",
+    "sendTime": "2024-11-06T11:29:34.661916Z",
+    "text": "Hii",
+    "userFile": null,
+    "location": null,
+    "suggestionResponse": {
+      "postBack": {
+        "data": "suggestion_2"
+      },
+      "plainText": "Suggestion #2",
+      "type": "REPLY"
+    }
+  }
+}
+
+POST
+Callbacks
+Receive RCS Callbacks
+
+
+Receive RCS Callbacks
+Receive callbacks from RCS platform like read, delivered and failed.
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Examples: 
+Typing
+Example Value
+{
+  "userPhoneNumber": "+91xxxxxxxxxx",
+  "botId": "65b7341d6b7825728b8bfeb9",
+  "entityType": "USER_EVENT",
+  "entity": {
+    "eventType": "TYPING",
+    "sendTime": "2024-11-06T11:36:16.829396Z",
+    "senderPhoneNumber": "+91xxxxxxxxxx",
+    "eventId": "MxMBiPU9UISyuxLdlJN8qPQw"
+  }
+}
+Overview
+Home
+Onboarding
+Guides
+Template Manager
+Campaign Manager
+Live Chat
+Legal
+Privacy Policy
+Terms & Conditions
+Data Retention and Destruction Policy
+Copyright © 2025 Tata Teleservices Ltd.
+
+
+use this and tell me how can i make alkl the mesages , new or previous ones appear on my crm and reply to them 
+
+Conversation with Gemini
+Skip to main content
+
+Tata Telecom Logo
+
+WhatsApp
+
+RCS
+
+WhatsApp Lite Plan
+
+API Docs
+
+Session API
+
+Whatsapp Voice Call API
+
+RCS API
+
+Search...
+
+TATA Tele Business Services Open APIs
+
+v1
+
+OAS 3.0
+
+/openapi/openapi.json
+
+Servers
+
+https://wb.omni.tatatelebusiness.com
+
+Authorize
+
+Template Messages
+
+POST
+
+/templates
+
+Create Template Message
+
+Use this endpoint to create WhatsApp template messages for reaching out to users.
+
+Template messages can be type of:
+
+Text Message
+
+Media Templates
+
+Interactive Templates
+
+Location Templates
+
+Multi-Product Templates
+
+Catalog Templates
+
+Order Details Templates
+
+Checkout Button Templates
+
+Order Status Templates
+
+Coupon Code Templates
+
+Carousel Templates
+
+Form Templates
+
+Limited-Time Offer Templates
+
+Authentication Templates
+
+Voice Call Templates
+
+Call Permission Request Templates
+
+Text Message
+
+Send simple text templates to users or you can send personalized template messages using the variables
+
+Media Templates
+
+Here you can send Media Templates, which can be Video, Image or Document.
+
+Interactive Templates
+
+Here you can send the templates with Buttons. There are two types of predefined buttons:
+
+Call-to-Action — Allows your customer to call a phone number and visit a website.
+
+Quick Reply — Allows your customer to return a simple text message.
+
+These buttons can be attached to text messages or media messages.
+
+Location Templates
+
+Location headers appear as generic maps at the top of the template and are useful for order tracking, delivery updates, ride hailing pickup/dropoff, locating physical stores, etc. You can share the location to users using the lattitude and longitude of the location.
+
+Multi-Product Templates
+
+MPM templates can be used to open marketing conversations. They allow you to showcase up to 30 products from your ecommerce catalog, organized in up to 10 sections, in a single message.
+
+Catalog Templates
+
+Catalog templates are marketing templates that allow you to showcase your product catalog entirely within WhatsApp. Catalog templates display a product thumbnail header image of your choice and custom body text, along with a fixed text header and fixed text sub-header.
+
+Order Details Templates
+
+Order details message template is one of the interactive message template that extends the call-to-action button to support sending order details as template and provides richer experience.
+
+Checkout Button Templates
+
+Checkout button templates are marketing templates that can showcase one or more products along with corresponding checkout buttons that WhatsApp users can use to make purchases without leaving the WhatsApp client.
+
+Order Status Templates
+
+Order status template allows you to provide order status updates to customers, such as processing, shipped, or completed, ensuring clear and timely communication with customers.
+
+Coupon Code Templates
+
+Coupon code templates are marketing templates that display a single copy code button. When tapped, the code is copied to the customer's clipboard.
+
+Carousel Templates
+
+Carousel templates allow you to send a single text message accompanied by a set of up to 10 carousel cards in a horizontally scrollable view.
+
+Form Templates
+
+Form Template enables businesses to offer a richer, more engaging user experience that can help customers get things done faster on WhatsApp without necessarily needing to switch to another app, or visit a website.
+
+Limited-Time Offer Templates
+
+Limited-time offer templates allow you to display expiration dates and running countdown timers for offer codes in template messages, making it easy for you to communicate time-bound offers and drive customer engagement.
+
+Authentication Templates
+
+Copy code authentication templates allow you to send a one-time password or code along with a copy code button to your users.
+
+Voice Call Templates
+
+Voice Call Templates allow WhatsApp consumers to initiate a voice call directly by clicking the button in the template.
+
+Call Permission Request Templates
+
+Call Permission Request Templates allow you to create templates that enable WhatsApp users to grant consent for receiving calls.
+
+Note: For all Marketing type templates, you can set a Time-to-Live (TTL) value to define the delivery window, only if you have onboarded the MM Lite API. TTL must be specified in seconds, with a minimum of 43,200 seconds (12 hours) and a maximum of 2,592,000 seconds (30 days). The recommended TTL value is 86,400 seconds (24 hours).
+
+Parameters
+
+Try it out
+
+No parameters
+
+Request body
+
+application/json
+
+Examples:
+
+Text
+
+Example Value
+
+Schema
+
+{
+
+"name": "{{template_name}}",
+
+"language": "en",
+
+"category": "MARKETING",
+
+"components": [
+
+{
+
+"type": "BODY",
+
+"text": "message-text"
+
+},
+
+{
+
+"type": "FOOTER",
+
+"text": "Footer text"
+
+}
+
+]
+
+}
+
+Responses
+
+Code Description Links
+
+200
+
+OK
+
+Media type
+
+application/json
+
+Controls Accept header.
+
+Examples
+
+Text
+
+Example Value
+
+Schema
+
+{
+
+"id": "bf07a16a-79ed-4e11-8aaa-b2025c2f57a2"
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+
+Content-Type string
+
+Example: application/json; charset=utf-8
+
+Content-Length integer
+
+Example: 329
+
+Connection string
+
+Example: keep-alive
+
+No links
+
+401
+
+Unauthorized
+
+Media type
+
+application/json
+
+Example Value
+
+Schema
+
+{
+
+"status": "ERROR",
+
+"status_code": 401,
+
+"error": "UNAUTHORIZED",
+
+"error_code": "AUTH_FAILED",
+
+"description": "JWT - Auth-Token not valid"
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 01 Feb 2023 13:02:15 GMT
+
+Content-Type string
+
+Example: application/json
+
+Content-Length integer
+
+Example: 329
+
+Connection string
+
+Example: keep-alive
+
+No links
+
+POST
+
+/whatsapp-cloud/media/handle
+
+Upload Media Handler to Create Template
+
+Use this endpoint to upload a media file to Smartflo platform to create template with media handler.
+
+In this, first you need to upload a media file, which returns the media handler. Use this media handler and pass that to Create Template API.
+
+Upload media supports for Image, Video and Documents.
+
+Parameters
+
+Try it out
+
+No parameters
+
+Request body
+
+multipart/form-data
+
+file
+
+string($binary)
+
+Media File to be upload
+
+Responses
+
+Code Description Links
+
+200
+
+OK
+
+Media type
+
+application/json
+
+Controls Accept header.
+
+Examples
+
+Media Upload
+
+Example Value
+
+Schema
+
+{
+
+"id": "5162148457229086"
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+
+Content-Type string
+
+Example: application/json; charset=utf-8
+
+Content-Length integer
+
+Example: 329
+
+Connection string
+
+Example: keep-alive
+
+No links
+
+401
+
+Unauthorized
+
+Media type
+
+application/json
+
+Example Value
+
+Schema
+
+{
+
+"status": "ERROR",
+
+"status_code": 401,
+
+"error": "UNAUTHORIZED",
+
+"error_code": "AUTH_FAILED",
+
+"description": "JWT - Auth-Token not valid"
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 01 Feb 2023 13:02:15 GMT
+
+Content-Type string
+
+Example: application/json
+
+Content-Length integer
+
+Example: 329
+
+Connection string
+
+Example: keep-alive
+
+No links
+
+424
+
+Failed Dependency
+
+Media type
+
+application/json
+
+Example Value
+
+Schema
+
+{
+
+"error": "UPLOAD_MEDIA",
+
+"meta": {
+
+"message": "Request failed with status code 413"
+
+},
+
+"message": "Can't upload media",
+
+"traceId": "db5a6d48-5d36-461b-8864-4244e5f8cf8e"
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 01 Feb 2023 13:02:15 GMT
+
+Content-Type string
+
+Example: application/json
+
+Content-Length integer
+
+Example: 329
+
+Connection string
+
+Example: keep-alive
+
+No links
+
+POST
+
+/whatsapp-cloud/messages
+
+Send Template Message
+
+Use this endpoint to send template messages to the users. This API helps you to reach out the users with WhatsApp pre-approved template messages.
+
+Template messages can be type of:
+
+Text Message
+
+Media Templates
+
+Interactive Templates
+
+Location Templates
+
+Multi-Product Templates
+
+Catalog Templates
+
+Order Details Templates
+
+Checkout Button Templates
+
+Order Status Templates
+
+Coupon Code Templates
+
+Carousel Templates
+
+Form Templates
+
+Limited-time Offer Templates
+
+Authentication Templates
+
+Voice Call Templates
+
+Call Permission Request Templates
+
+Text Message
+
+Send simple text templates to users or you can send personalized template messages using the variables
+
+Media Templates
+
+Here you can send Media Templates, which can be Video, Image or Document.
+
+Interactive Templates
+
+Here you can send the templates with Buttons. There are two types of predefined buttons:
+
+Call-to-Action — Allows your customer to call a phone number and visit a website.
+
+Quick Reply — Allows your customer to return a simple text message.
+
+These buttons can be attached to text messages or media messages.
+
+Location Templates
+
+Location headers appear as generic maps at the top of the template and are useful for order tracking, delivery updates, ride hailing pickup/dropoff, locating physical stores, etc. You can share the location to users using the lattitude and longitude of the location.
+
+Multi-Product Templates
+
+MPM templates can be used to open marketing conversations. They allow you to showcase up to 30 products from your ecommerce catalog, organized in up to 10 sections, in a single message.
+
+Catalog Templates
+
+Catalog templates are marketing templates that allow you to showcase your product catalog entirely within WhatsApp. Catalog templates display a product thumbnail header image of your choice and custom body text, along with a fixed text header and fixed text sub-header.
+
+Order Details Templates
+
+Order details message template is one of the interactive message template that extends the call-to-action button to support sending order details as template and provides richer experience.
+
+Checkout Button Templates
+
+Checkout button templates are marketing templates that can showcase one or more products along with corresponding checkout buttons that WhatsApp users can use to make purchases without leaving the WhatsApp client.
+
+Order Status Templates
+
+Order status template allows you to provide order status updates to customers, such as processing, shipped, or completed, ensuring clear and timely communication with customers.
+
+Coupon Code Templates
+
+Coupon code templates are marketing templates that display a single copy code button. When tapped, the code is copied to the customer's clipboard.
+
+Carousel Templates
+
+Carousel templates allow you to send a single text message accompanied by a set of up to 10 carousel cards in a horizontally scrollable view
+
+Form Templates
+
+Form Template enables businesses to offer a richer, more engaging user experience that can help customers get things done faster on WhatsApp without necessarily needing to switch to another app, or visit a website.
+
+Limited-Time Offer Templates
+
+Limited-time offer templates allow you to display expiration dates and running countdown timers for offer codes in template messages, making it easy for you to communicate time-bound offers and drive customer engagement.
+
+Authentication Templates
+
+Copy code authentication templates allow you to send a one-time password or code along with a copy code button to your users.
+
+Voice Call Templates
+
+Voice Call Templates allow WhatsApp consumers to initiate a voice call directly by clicking the button in the template.
+
+Call Permission Request Templates
+
+Call Permission Request Templates allow you to send templates that enable WhatsApp users to grant consent for receiving calls.
+
+Request Header
+
+Key Description
+
+Authorization Here you need to add the access token for the Authorization. You can copy the Access Token from here .
+
+Request Body
+
+Key Description
+
+to Message recipient number. Must be in international format that includes country code. For example: +919090909090. Country code is must to add.
+
+type Type of message. Value should be template
+
+template The template object to build a message that will be sent
+
+name It is template name. You can copy the template name from the Template manager that you want to send. example: hello_world
+
+language It is a language code for the template. You can check the different language codes from here. Use the same language code that used while registering the template.
+
+components It's a list of components that is created during the template creation like header, body Interactive buttons.
+
+components => type Components types are body, button, header.
+
+subtype Required when type=button. Not used for the other types.
+
+quick_reply: Refers to a previously created quick reply button that allows for the customer to return a predefined message.
+
+url: Refers to a previously created button that allows the customer to visit the URL generated by appending the text parameter to the predefined prefix URL in the template.
+
+index Number of button index starting from 0, only if quick reply or dynamic URL buttons have been registered, It can have up to three quick reply buttons or only one dynamic URL button.
+
+example: 0
+
+minimum: 0
+
+maximum: 2
+
+parameters This is required in case of a template registered with the variables.
+
+parameters => type Parameter types are image, video, document,location, payload
+
+image => link URL of a image sent in the header, only if having media URL. It is expected to be a valid URL starting with https:// or http://. Supported image types are PNG, JPG, JPEG. Maximum image size is 5MB.
+
+image => id This is the id of a media, You can create id by uploading the image using the media APIs explained in this document. Use the media id fetched after uploading the media.
+
+video => link URL of a video sent in the header, only if having media URL. It is expected to be a valid URL starting with https:// or http://. Supported video types are MP4, 3GPP. Maximum video size is 16MB.
+
+video => id This is the id of a media, You can create id by uploading the video using the media APIs explained in this document. Use the media id fetched after uploading the media.
+
+document => link URL of a document sent in the header, only if having media URL. It is expected to be a valid URL starting with https:// or http://. Supported document type is PDF. Maximum document size is 100MB
+
+document => id This is the id of a media, You can create id by uploading the document using the media APIs explained in this document. Use the media id fetched after uploading the media.
+
+document => filename Add a file name to show in WhatsApp.
+
+location => latitude Lattitude of the location. For example: 23.0917101.
+
+location => longitude Longitude of the location. For example: 72.5949363.
+
+location => name Name of the place. For example: Fab India Store.
+
+location => address Detailed address of the location For example: Mumbai Metropolitan Region
+
+payload Payload of a quick reply button, only if quick reply buttons have been registered. It should be in text format. Add the keyword as payload.
+
+source Source can be a label or string that indicates the platform or third party name from where the message is sent.
+
+metaData => custom_callback_data custom_callback_data optional is field allows businesses to pass a custom tracking value which will be returned unprocessed in all subsequent webhook callbacks (sent, delivered, read, failed).
+
+Parameters
+
+Try it out
+
+No parameters
+
+Request body
+
+application/json
+
+Examples:
+
+Text
+
+Example Value
+
+Schema
+
+{
+
+"to": "{{Recipient-Phone-Number}}",
+
+"type": "template",
+
+"source": "external",
+
+"template": {
+
+"name": "welcome",
+
+"language": {
+
+"code": "en"
+
+},
+
+"components": []
+
+},
+
+"metaData": {
+
+"custom_callback_data": "<optional_value>"
+
+}
+
+}
+
+Responses
+
+Code Description Links
+
+200
+
+OK
+
+Media type
+
+application/json
+
+Controls Accept header.
+
+Examples
+
+Text
+
+Example Value
+
+Schema
+
+{
+
+"id": "bf07a16a-79ed-4e11-8aaa-b2025c2f57a2"
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+
+Content-Type string
+
+Example: application/json; charset=utf-8
+
+Content-Length integer
+
+Example: 329
+
+Connection string
+
+Example: keep-alive
+
+No links
+
+401
+
+Unauthorized
+
+Media type
+
+application/json
+
+Example Value
+
+Schema
+
+{
+
+"status": "ERROR",
+
+"status_code": 401,
+
+"error": "UNAUTHORIZED",
+
+"error_code": "AUTH_FAILED",
+
+"description": "JWT - Auth-Token not valid"
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 01 Feb 2023 13:02:15 GMT
+
+Content-Type string
+
+Example: application/json
+
+Content-Length integer
+
+Example: 329
+
+Connection string
+
+Example: keep-alive
+
+No links
+
+GET
+
+/templates/insights
+
+Get Template Insights
+
+This endpoint is used to get statistics of the template.
+
+Parameters
+
+Try it out
+
+Name Description
+
+startDate *
+
+string
+
+(query)
+
+Initial date for viewing Insight statistics
+
+startDate
+
+endDate *
+
+string
+
+(query)
+
+End date for viewing Insight statistics
+
+endDate
+
+granularity
+
+string
+
+(query)
+
+Level of detail in which data is analyzed and presented.
+
+granularity
+
+templateIDs *
+
+string
+
+(query)
+
+List of templateIds whose Insights we wish to view
+
+templateIDs
+
+Responses
+
+Code Description Links
+
+200
+
+OK
+
+Media type
+
+application/json
+
+Controls Accept header.
+
+Examples
+
+data
+
+Example Value
+
+Schema
+
+{
+
+"data": {
+
+"granularity": "string",
+
+"data_points": [
+
+{
+
+"template_id": "string",
+
+"start": 0,
+
+"end": 0,
+
+"sent": 0,
+
+"delivered": 0,
+
+"read": 0
+
+}
+
+]
+
+},
+
+"paging": {
+
+"cursors": {
+
+"before": "string",
+
+"after": "string"
+
+}
+
+}
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 22 May 2024 06:36:54 GMT
+
+Content-Type string
+
+Example: application/json; charset=utf-8
+
+Content-Length integer
+
+Example: 208
+
+Connection string
+
+Example: keep-alive
+
+vary string
+
+Example: Origin
+
+No links
+
+400
+
+Bad Request
+
+Media type
+
+application/json
+
+Examples
+
+example-0
+
+Example Value
+
+Schema
+
+{
+
+"error": "string",
+
+"meta": {
+
+"message": "string",
+
+"code": 0
+
+},
+
+"message": "string",
+
+"traceId": "string"
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 22 May 2024 06:37:21 GMT
+
+Content-Type string
+
+Example: application/json; charset=utf-8
+
+Content-Length integer
+
+Example: 118
+
+Connection string
+
+Example: keep-alive
+
+vary string
+
+Example: Origin
+
+No links
+
+424
+
+Failed Dependency
+
+Media type
+
+application/json
+
+Example Value
+
+Schema
+
+{
+
+"error": "GET_MESSAGE_TEMPLATE_INSIGHTS",
+
+"meta": {
+
+"message": "(#100) Param template_ids[0] is not a valid whatsapp_message_template ID",
+
+"code": 100
+
+},
+
+"message": "Can't get the message template insights",
+
+"traceId": "30c23aa6-5224-478b-97fd-b91f70ea8899"
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 22 May 2024 06:36:54 GMT
+
+Content-Type string
+
+Example: application/json; charset=utf-8
+
+Content-Length integer
+
+Example: 247
+
+Connection string
+
+Example: keep-alive
+
+vary string
+
+Example: Origin
+
+No links
+
+GET
+
+/templates/insights-by-name
+
+Get Template Insights By Name And Language Code
+
+This endpoint is used to get statistics of template using name and language code.
+
+Parameters
+
+Try it out
+
+Name Description
+
+name *
+
+string
+
+(query)
+
+Name of the template according to Meta
+
+name
+
+language *
+
+string
+
+(query)
+
+Language code of the template according to Meta
+
+Available values : af, sq, ar, ar_EG, ar_AE, ar_LB, ar_MA, ar_QA, az, be_BY, bn, bn_IN, bg, ca, zh_CN, zh_HK, zh_TW, hr, cs, da, prs_AF, nl, nl_BE, en, en_GB, en_US, en_AE, en_AU, en_CA, en_GH, en_IE, en_IN, en_JM, en_MY, en_NZ, en_QA, en_SG, en_UG, en_ZA, et, fil, fi, fr, fr_BE, fr_CA, fr_CH, fr_CI, fr_MA, ka, de, de_AT, de_CH, el, gu, ha, he, hi, hu, id, ga, it, ja, kn, kk, rw_RW, ko, ky_KG, lo, lv, lt, mk, ms, ml, mr, nb, ps_AF, fa, pl, pt_BR, pt_PT, pa, ro, ru, sr, si_LK, sk, sl, es, es_AR, es_CL, es_CO, es_CR, es_DO, es_EC, es_HN, es_MX, es_PA, es_PE, es_ES, es_UY, sw, sv, ta, te, th, tr, uk, ur, uz, vi, zu
+
+en
+
+startDate *
+
+string
+
+(query)
+
+Initial date for viewing Insight statistics
+
+2021-01-01
+
+endDate *
+
+string
+
+(query)
+
+End date for viewing Insight statistics
+
+2021-01-31
+
+granularity
+
+string
+
+(query)
+
+Level of detail in which data is analyzed and presented.
+
+Available values : DAILY
+
+DAILY
+
+Responses
+
+Code Description Links
+
+200
+
+OK
+
+Media type
+
+application/json
+
+Controls Accept header.
+
+Examples
+
+success
+
+Example Value
+
+Schema
+
+{
+
+"data": [
+
+{
+
+"granularity": "DAILY",
+
+"data_points": [
+
+{
+
+"template_id": "817405930290117",
+
+"start": 1716336000,
+
+"end": 1716422400,
+
+"sent": 0,
+
+"delivered": 0,
+
+"read": 0
+
+},
+
+{
+
+"template_id": "817405930290117",
+
+"start": 1708732800,
+
+"end": 1708819200,
+
+"sent": 0,
+
+"delivered": 0,
+
+"read": 0
+
+}
+
+]
+
+}
+
+],
+
+"paging": {
+
+"cursors": {
+
+"before": "MAZDZD",
+
+"after": "ODk5"
+
+}
+
+}
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 22 May 2024 06:36:54 GMT
+
+Content-Type string
+
+Example: application/json; charset=utf-8
+
+Content-Length integer
+
+Example: 208
+
+Connection string
+
+Example: keep-alive
+
+vary string
+
+Example: Origin
+
+No links
+
+400
+
+Bad Request
+
+Media type
+
+application/json
+
+Examples
+
+Invalid granularity
+
+Example Value
+
+Schema
+
+{
+
+"message": "Bad Request Exception",
+
+"details": [
+
+"granularity must be one of the following values: DAILY"
+
+],
+
+"traceId": "f0cd28e2-78df-419c-99e6-5df4dfd55274"
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 22 May 2024 06:37:21 GMT
+
+Content-Type string
+
+Example: application/json; charset=utf-8
+
+Content-Length integer
+
+Example: 118
+
+Connection string
+
+Example: keep-alive
+
+vary string
+
+Example: Origin
+
+No links
+
+404
+
+Not Found
+
+Media type
+
+application/json
+
+Examples
+
+Invalid name or language
+
+Example Value
+
+Schema
+
+{
+
+"error": "MESSAGE_TEMPLATE_NOT_FOUND",
+
+"meta": {},
+
+"message": "Template with name: hello_world and language: en not found",
+
+"traceId": "f8b932af-eb55-4030-8937-19a64b7726bd"
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Mon, 23 Jun 2025 08:07:26 GMT
+
+Content-Type string
+
+Example: application/json; charset=utf-8
+
+Content-Length integer
+
+Example: 168
+
+Connection string
+
+Example: keep-alive
+
+No links
+
+424
+
+Failed Dependency
+
+Media type
+
+application/json
+
+Example Value
+
+Schema
+
+{
+
+"error": "GET_MESSAGE_TEMPLATE_INSIGHTS",
+
+"meta": {
+
+"message": "(#100) Param template_ids[0] is not a valid whatsapp_message_template ID",
+
+"code": 100
+
+},
+
+"message": "Can't get the message template insights",
+
+"traceId": "30c23aa6-5224-478b-97fd-b91f70ea8899"
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 22 May 2024 06:36:54 GMT
+
+Content-Type string
+
+Example: application/json; charset=utf-8
+
+Content-Length integer
+
+Example: 247
+
+Connection string
+
+Example: keep-alive
+
+vary string
+
+Example: Origin
+
+No links
+
+POST
+
+/templates/insights/optin
+
+Opt-in
+
+Use this endpoint to enable template insights once.
+
+Parameters
+
+Try it out
+
+No parameters
+
+Responses
+
+Code Description Links
+
+200
+
+OK
+
+Media type
+
+application/json
+
+Controls Accept header.
+
+Example Value
+
+Schema
+
+{
+
+"success": true
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 22 May 2024 12:29:04 GMT
+
+Content-Type string
+
+Example: application/json; charset=utf-8
+
+Content-Length integer
+
+Example: 16
+
+Connection string
+
+Example: keep-alive
+
+vary string
+
+Example: Origin
+
+No links
+
+401
+
+Unauthorized
+
+Media type
+
+application/json
+
+Example Value
+
+Schema
+
+{
+
+"status": "ERROR",
+
+"status_code": 401,
+
+"error": "UNAUTHORIZED",
+
+"error_code": "AUTH_FAILED",
+
+"description": "authentication : JWT - Auth-Token not valid or expired"
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 22 May 2024 12:12:01 GMT
+
+Content-Type string
+
+Example: application/json
+
+Transfer-Encoding string
+
+Example: chunked
+
+Connection string
+
+Example: keep-alive
+
+No links
+
+Opt-in/ Opt-out
+
+POST
+
+/business/optin_optout
+
+Opt-in/ Opt-out
+
+Use this endpoint to get the opt-ins and opt-out of the users to sent the messages on WhatsApp.
+
+To start receiving messages on WhatsApp, users need to provide explicit consent through a third-party channel. This channel can include various communication methods like your website, mobile app, missed call, IVR, email, SMS, retail location, contact center, and WhatsApp session-based messages.
+
+The opt-in process must be explicit, requiring a user action, such as entering a phone number or selecting a checkbox to confirm their consent.
+
+Ensure transparent opt-in messaging so that users are informed about the types of messages they are subscribing to.
+
+Businesses are responsible for maintaining opt-ins and should be prepared to provide this information if requested by WhatsApp.
+
+Parameters
+
+Try it out
+
+No parameters
+
+Request body
+
+application/json
+
+Examples:
+
+Opt-out with Auto optin days
+
+Example Value
+
+Schema
+
+{
+
+"recipient_numbers": [
+
+"{{RECIPIENT-PHONE_NUMBER}}",
+
+"{{RECIPIENT-PHONE_NUMBER}}"
+
+],
+
+"type": "optout",
+
+"auto_optin_in_days": 1
+
+}
+
+Responses
+
+Code Description Links
+
+200
+
+OK
+
+Media type
+
+application/json
+
+Controls Accept header.
+
+Examples
+
+Opt out
+
+Example Value
+
+Schema
+
+{
+
+"success": true
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+
+Content-Type string
+
+Example: application/json; charset=utf-8
+
+Content-Length integer
+
+Example: 329
+
+Connection string
+
+Example: keep-alive
+
+No links
+
+401
+
+Unauthorized
+
+Media type
+
+application/json
+
+Example Value
+
+Schema
+
+{
+
+"status": "ERROR",
+
+"status_code": 401,
+
+"error": "UNAUTHORIZED",
+
+"error_code": "AUTH_FAILED",
+
+"description": "JWT - Auth-Token not valid"
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 01 Feb 2023 13:02:15 GMT
+
+Content-Type string
+
+Example: application/json
+
+Content-Length integer
+
+Example: 329
+
+Connection string
+
+Example: keep-alive
+
+No links
+
+Media Upload
+
+POST
+
+/whatsapp-cloud/media
+
+Upload Media
+
+Use this endpoint to upload a media file to Smartflo platform to send media using the media id.
+
+In this, first you need to upload a media file, which returns the media id. Use this media id and pass that to Send Message Template API. This approach can be used when you don't have the public facing URL of the media
+
+Upload media supports for Image, Video and Documents.
+
+NOTE: The media uploaded here will be stored for 30 days in the system after 30 days the media id will get expired
+
+Parameters
+
+Try it out
+
+No parameters
+
+Request body
+
+multipart/form-data
+
+file
+
+string($binary)
+
+Media File to be upload
+
+Responses
+
+Code Description Links
+
+200
+
+OK
+
+Media type
+
+application/json
+
+Controls Accept header.
+
+Examples
+
+Media Upload
+
+Example Value
+
+Schema
+
+{
+
+"id": "5162148457229086"
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+
+Content-Type string
+
+Example: application/json; charset=utf-8
+
+Content-Length integer
+
+Example: 329
+
+Connection string
+
+Example: keep-alive
+
+No links
+
+401
+
+Unauthorized
+
+Media type
+
+application/json
+
+Example Value
+
+Schema
+
+{
+
+"status": "ERROR",
+
+"status_code": 401,
+
+"error": "UNAUTHORIZED",
+
+"error_code": "AUTH_FAILED",
+
+"description": "JWT - Auth-Token not valid"
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 01 Feb 2023 13:02:15 GMT
+
+Content-Type string
+
+Example: application/json
+
+Content-Length integer
+
+Example: 329
+
+Connection string
+
+Example: keep-alive
+
+No links
+
+424
+
+Failed Dependency
+
+Media type
+
+application/json
+
+Example Value
+
+Schema
+
+{
+
+"error": "UPLOAD_MEDIA",
+
+"meta": {
+
+"message": "Request failed with status code 413"
+
+},
+
+"message": "Can't upload media",
+
+"traceId": "db5a6d48-5d36-461b-8864-4244e5f8cf8e"
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 01 Feb 2023 13:02:15 GMT
+
+Content-Type string
+
+Example: application/json
+
+Content-Length integer
+
+Example: 329
+
+Connection string
+
+Example: keep-alive
+
+No links
+
+GET
+
+/whatsapp-cloud/media/download/{mediaId}
+
+Download Media
+
+This endpoint is used to get the uploaded media using the media id. You can get the URL for the media and download that file.
+
+Parameters
+
+Try it out
+
+Name Description
+
+mediaId *
+
+string
+
+(path)
+
+Media ID to download
+
+mediaId
+
+Responses
+
+Code Description Links
+
+200
+
+OK
+
+Media type
+
+application/json
+
+Controls Accept header.
+
+Examples
+
+Download Media
+
+Example Value
+
+Schema
+
+{
+
+"url": "https://s3-prod-smartflo-wa-uploads.s3.ap-south-1.amazonaws.com/1677836099076_yUiMQSj0wd?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQQ7ALCDWPOW2MCIA%2F20230303%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20230303T093459Z&X-Amz-Expires=900&X-Amz-Signature=5206fcff8ee126b6eabf21dd1852ab30456dd6aa1361994306cfbe876afdb48e&X-Amz-SignedHeaders=host",
+
+"mime_type": "image/jpeg"
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+
+Content-Type string
+
+Example: application/json; charset=utf-8
+
+Content-Length integer
+
+Example: 329
+
+Connection string
+
+Example: keep-alive
+
+No links
+
+401
+
+Unauthorized
+
+Media type
+
+application/json
+
+Example Value
+
+Schema
+
+{
+
+"status": "ERROR",
+
+"status_code": 401,
+
+"error": "UNAUTHORIZED",
+
+"error_code": "AUTH_FAILED",
+
+"description": "JWT - Auth-Token not valid"
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 01 Feb 2023 13:02:15 GMT
+
+Content-Type string
+
+Example: application/json
+
+Content-Length integer
+
+Example: 329
+
+Connection string
+
+Example: keep-alive
+
+No links
+
+424
+
+Failed Dependency
+
+Media type
+
+application/json
+
+Example Value
+
+Schema
+
+{
+
+"error": "GET_MEDIA_URL",
+
+"meta": {
+
+"message": "Unsupported get request. Object with ID '5162148457229860' does not exist, cannot be loaded due to missing permissions, or does not support this operation. Please read the Graph API documentation at https://developers.facebook.com/docs/graph-api",
+
+"code": 100
+
+},
+
+"message": "Can't retrieve media url",
+
+"traceId": "cd23023b-c0be-4b04-a86a-dd08f78b9112"
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 01 Feb 2023 13:02:15 GMT
+
+Content-Type string
+
+Example: application/json
+
+Content-Length integer
+
+Example: 329
+
+Connection string
+
+Example: keep-alive
+
+No links
+
+DELETE
+
+/whatsapp-cloud/media/{mediaId}
+
+Delete Media
+
+Use this endpoint to delete the media from Smartflo using the media id.
+
+Parameters
+
+Try it out
+
+Name Description
+
+mediaId *
+
+string
+
+(path)
+
+Media ID to delete
+
+mediaId
+
+Responses
+
+Code Description Links
+
+200
+
+OK
+
+Media type
+
+application/json
+
+Controls Accept header.
+
+Examples
+
+Delete Media
+
+Example Value
+
+Schema
+
+{
+
+"success": true
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+
+Content-Type string
+
+Example: application/json; charset=utf-8
+
+Content-Length integer
+
+Example: 329
+
+Connection string
+
+Example: keep-alive
+
+No links
+
+401
+
+Unauthorized
+
+Media type
+
+application/json
+
+Example Value
+
+Schema
+
+{
+
+"status": "ERROR",
+
+"status_code": 401,
+
+"error": "UNAUTHORIZED",
+
+"error_code": "AUTH_FAILED",
+
+"description": "JWT - Auth-Token not valid"
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 01 Feb 2023 13:02:15 GMT
+
+Content-Type string
+
+Example: application/json
+
+Content-Length integer
+
+Example: 329
+
+Connection string
+
+Example: keep-alive
+
+No links
+
+424
+
+Failed Dependency
+
+Media type
+
+application/json
+
+Example Value
+
+Schema
+
+{
+
+"error": "DELETE_MEDIA",
+
+"meta": {
+
+"message": "Unsupported delete request. Object with ID '5162148457229086' does not exist, cannot be loaded due to missing permissions, or does not support this operation. Please read the Graph API documentation at https://developers.facebook.com/docs/graph-api",
+
+"code": 100
+
+},
+
+"message": "Can't delete media",
+
+"traceId": "ab252994-ca64-4e52-ae14-33e3b168c600"
+
+}
+
+Headers:
+
+Name Description Type
+
+Date string
+
+Example: Wed, 01 Feb 2023 13:02:15 GMT
+
+Content-Type string
+
+Example: application/json
+
+Content-Length integer
+
+Example: 329
+
+Connection string
+
+Example: keep-alive
+
+No links
+
+Webhooks
+
+POST
+
+Messages
+
+Receive User Messages
+
+Receive User Message
+
+Receive messages from Meta's platform when a user interacts with your application.Use this webhook to process and respond to these incoming user messages.
+
+Validating Payloads
+
+We sign all Event Notification payloads with a sha256 signature and include the signature in the request's x-hub-signature-256 header. You don't have to validate the payload, but you should.
+
+To validate the payload:
+
+Generate a sha256 signature using the payload and your partner token.
+
+Compare your signature to the signature in the x-hub-signature-256 header.
+
+If the signatures match, the payload is genuine.
+
+Parameters
+
+Try it out
+
+No parameters
+
+Request body
+
+application/json
+
+Examples:
+
+Text
+
+Example Value
+
+Schema
+
+{
+
+"contacts": [
+
+{
+
+"profile": {
+
+"
+
+You've provided a comprehensive API documentation for Tata Tele Business Services' WhatsApp Open APIs. It details various endpoints for managing WhatsApp interactions, including:
+
+Template Message Management:
+
+Creating Templates: POST /templates allows for the creation of various template types (Text, Media, Interactive, Location, Multi-Product, Catalog, Order Details, Checkout Button, Order Status, Coupon Code, Carousel, Form, Limited-Time Offer, Authentication, Voice Call, Call Permission Request).
+
+Uploading Media for Templates: POST /whatsapp-cloud/media/handle is used to upload media files and obtain a media handler for use in template creation.
+
+Sending Template Messages: POST /whatsapp-cloud/messages is the endpoint to send pre-approved template messages to users, supporting all the template types mentioned above. It also covers details for populating variables within templates for personalization.
+
+Template Insights:
+
+Getting Insights by Template ID: GET /templates/insights provides statistics (sent, delivered, read) for specific templates using their IDs within a given date range.
+
+Getting Insights by Template Name and Language: GET /templates/insights-by-name allows retrieving statistics using the template name and language code.
+
+Enabling Template Insights: POST /templates/insights/optin is used to enable template insights.
+
+Opt-in/Opt-out Management: POST /business/optin_optout handles user opt-in and opt-out for WhatsApp messages.
+
+General Media Management:
+
+Uploading Media: POST /whatsapp-cloud/media uploads media files to the Smartflo platform, returning a media ID for use in sending messages.
+
+Downloading Media: GET /whatsapp-cloud/media/download/{mediaId} allows downloading uploaded media using its ID.
+
+Deleting Media: DELETE /whatsapp-cloud/media/{mediaId} is for deleting uploaded media.
+
+Webhooks: Information about POST /Messages for receiving incoming user messages and the process for validating payloads using x-hub-signature-256 header.
+
+The documentation clearly outlines:
+
+HTTP Methods: POST, GET, DELETE
+
+Endpoints: Specific URIs for each API call.
+
+Parameters: Both query and path parameters where applicable.
+
+Request Bodies: Examples and schemas for JSON and multipart/form-data requests, including detailed descriptions of each field.
+
+Responses: HTTP status codes (200 OK, 400 Bad Request, 401 Unauthorized, 404 Not Found, 424 Failed Dependency), example response bodies, and schema definitions.
+
+Headers: Example headers for requests and responses.
+
+This is a well-structured and detailed API reference.
+
+What would you like to do with this information? For example, are you looking for a specific API call, want to understand how to use a particular feature, or need help constructing a request?
+
+Whatsapp Voice Call APIs
+
+ 1.0.0
+
+OAS 3.0
+
+/openapi/whatsapp-voice-call-api.json
+
+Servers
+
+https://wb.omni.tatatelebusiness.com
+
+Authorize
+
+Calls
+
+POST
+
+/whatsapp-cloud/calls
+
+Send Call Updates
+
+Send Call Updates
+
+This API allows you to control and update the state of WhatsApp calls. It supports initiating outbound calls, accepting or rejecting incoming calls, and terminating ongoing sessions.
+
+🔄 Supported Call Actions
+
+Action  Description Required Fields
+
+connect Initiate an outgoing call to, session.sdp_type = "offer", session.sdp
+
+pre_accept  Pre-accept an incoming call (ICE warm-up) call_id, session.sdp_type = "answer", session.sdp
+
+accept  Accept an incoming call call_id, session.sdp_type = "answer", session.sdp
+
+reject  Reject an incoming call call_id
+
+terminate Terminate an ongoing call call_id
+
+📤 Request Payload Format
+
+The payload must include the messaging product type (whatsapp) and vary in required fields based on the action.
+
+For outgoing calls, provide the to phone number and an SDP offer in the session object.
+
+For incoming call responses, provide the call_id and an SDP answer (for accept/pre_accept).
+
+For reject or terminate, only the call_id is necessary.
+
+📥 SDP Exchange via session
+
+The session object includes WebRTC SDP data:
+
+sdp_type: Indicates if the payload is an SDP "offer" or "answer".
+
+sdp: The SDP string (must be properly escaped sdp).
+
+Example:
+
+"session": {
+
+  "sdp_type": "offer",
+
+  "sdp": "{...SDP string...}"
+
+}
+
+📬 Response Format
+
+For outgoing calls (action: connect), you will receive the following response:
+
+{
+
+  "calls": [
+
+    {
+
+      "id": "wacid.ABGGFjFVU2AfAgo6V-Hc5eCgK5Gh"
+
+    }
+
+  ]
+
+}
+
+For all other call actions (pre_accept, accept, reject, terminate), the response will be:
+
+{
+
+  "messaging_product": "whatsapp",
+
+  "success": true
+
+}
+
+Parameters
+
+Try it out
+
+Name  Description
+
+Authorization
+
+string
+
+(header)
+
+Example : {{AUTH_TOKEN}}
+
+{{AUTH_TOKEN}}
+
+Request body
+
+application/json
+
+Examples:
+
+Pre-accept an incoming call
+
+Example Value
+
+Schema
+
+{
+
+  "messaging_product": "whatsapp",
+
+  "call_id": "wacid.ABGGFjFVU2AfAgo6V-Hc5eCgK5Gh",
+
+  "action": "pre_accept",
+
+  "session": {
+
+    "sdp_type": "answer",
+
+    "sdp": "{...SDP answer...}"
+
+  }
+
+}
+
+Responses
+
+Code  Description Links
+
+201
+
+Success
+
+Media type
+
+application/json
+
+Controls Accept header.
+
+Examples
+
+Success
+
+Example Value
+
+Schema
+
+{
+
+  "messaging_product": "whatsapp",
+
+  "success": true
+
+}
+
+Headers:
+
+Name  Description Type
+
+Date    string
+
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+
+Content-Type    string
+
+Example: application/json; charset=utf-8
+
+Content-Length    integer
+
+Example: 329
+
+Connection    string
+
+Example: keep-alive
+
+No links
+
+400
+
+Bad Request
+
+Media type
+
+application/json
+
+Examples
+
+Auth token invalid
+
+Example Value
+
+Schema
+
+{
+
+  "error": "AUTH_TOKEN_INVALID",
+
+  "meta": {},
+
+  "message": "Auth-Token not valid or expired",
+
+  "traceId": "d7b61242-da15-410a-afdc-baf72b1edf64"
+
+}
+
+Headers:
+
+Name  Description Type
+
+Date    string
+
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+
+Content-Type    string
+
+Example: application/json; charset=utf-8
+
+Content-Length    integer
+
+Example: 329
+
+Connection    string
+
+Example: keep-alive
+
+No links
+
+401
+
+Unauthorized
+
+Media type
+
+application/json
+
+Example Value
+
+Schema
+
+{
+
+  "error": "AUTH_TOKEN_NOT_FOUND",
+
+  "meta": {},
+
+  "message": "Auth-Token not found in header",
+
+  "traceId": "d7b61242-da15-410a-afdc-baf72b1edf64"
+
+}
+
+Headers:
+
+Name  Description Type
+
+Date    string
+
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+
+Content-Type    string
+
+Example: application/json; charset=utf-8
+
+Content-Length    integer
+
+Example: 329
+
+Connection    string
+
+Example: keep-alive
+
+No links
+
+424
+
+Failed Dependency (WebDAV) (RFC 4918)
+
+For details on possible errors and their corresponding codes, refer to the Meta Error Codes documentation.
+
+Media type
+
+application/json
+
+Example Value
+
+Schema
+
+{
+
+  "error": "WHATSAPP_CALL_UPDATE",
+
+  "meta": {
+
+    "message": "(#138000) Calling APIs are not enabled for this phone number",
+
+    "code": 138000,
+
+    "type": "OAuthException",
+
+    "error_data": {
+
+      "messaging_product": "whatsapp",
+
+      "details": "Can't send whatsapp call update"
+
+    },
+
+    "fbtrace_id": "AMuEbCNBbbfCNt1TGJqpjJg"
+
+  },
+
+  "message": "Can't send whatsapp call update",
+
+  "traceId": "db5a6d48-5d36-461b-8864-4244e5f8cf8e"
+
+}
+
+Headers:
+
+Name  Description Type
+
+Date    string
+
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+
+Content-Type    string
+
+Example: application/json; charset=utf-8
+
+Content-Length    integer
+
+Example: 329
+
+Connection    string
+
+Example: keep-alive
+
+No links
+
+Settings
+
+POST
+
+/whatsapp-cloud/settings
+
+Update phone number settings
+
+Update phone number settings
+
+This endpoint is used to update phone number related settings
+
+Parameters
+
+Try it out
+
+Name  Description
+
+Authorization
+
+string
+
+(header)
+
+Example : {{AUTH_TOKEN}}
+
+{{AUTH_TOKEN}}
+
+Request body
+
+application/json
+
+Examples:
+
+Display Call Icon in business profile
+
+Example Value
+
+Schema
+
+{
+
+  "calling": {
+
+    "call_icon_visibility": "DEFAULT"
+
+  }
+
+}
+
+Responses
+
+Code  Description Links
+
+200
+
+OK
+
+Media type
+
+application/json
+
+Controls Accept header.
+
+Example Value
+
+Schema
+
+{
+
+  "success": true
+
+}
+
+Headers:
+
+Name  Description Type
+
+Date    string
+
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+
+Content-Type    string
+
+Example: application/json; charset=utf-8
+
+Content-Length    integer
+
+Example: 329
+
+Connection    string
+
+Example: keep-alive
+
+No links
+
+400
+
+Bad Request
+
+Media type
+
+application/json
+
+Examples
+
+Auth token invalid
+
+Example Value
+
+Schema
+
+{
+
+  "error": "AUTH_TOKEN_INVALID",
+
+  "meta": {},
+
+  "message": "Auth-Token not valid or expired",
+
+  "traceId": "d7b61242-da15-410a-afdc-baf72b1edf64"
+
+}
+
+Headers:
+
+Name  Description Type
+
+Date    string
+
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+
+Content-Type    string
+
+Example: application/json; charset=utf-8
+
+Content-Length    integer
+
+Example: 329
+
+Connection    string
+
+Example: keep-alive
+
+No links
+
+401
+
+Unauthorized
+
+Media type
+
+application/json
+
+Example Value
+
+Schema
+
+{
+
+  "error": "AUTH_TOKEN_NOT_FOUND",
+
+  "meta": {},
+
+  "message": "Auth-Token not found in header",
+
+  "traceId": "d7b61242-da15-410a-afdc-baf72b1edf64"
+
+}
+
+Headers:
+
+Name  Description Type
+
+Date    string
+
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+
+Content-Type    string
+
+Example: application/json; charset=utf-8
+
+Content-Length    integer
+
+Example: 329
+
+Connection    string
+
+Example: keep-alive
+
+No links
+
+424
+
+Failed Dependency (WebDAV) (RFC 4918)
+
+For details on possible errors and their corresponding codes, refer to the Meta Error Codes documentation.
+
+Media type
+
+application/json
+
+Example Value
+
+Schema
+
+{
+
+  "error": "PHONE_NUMBER_SETTINGS_UPDATE",
+
+  "meta": {
+
+    "message": "(#10) Application does not have permission for this action",
+
+    "code": 10,
+
+    "type": "OAuthException",
+
+    "error_data": {
+
+      "messaging_product": "whatsapp",
+
+      "details": "Can't update the message templates"
+
+    },
+
+    "fbtrace_id": "AMuEbCNBbbfCNt1TGJqp"
+
+  },
+
+  "message": "Error while updating phone number settings",
+
+  "traceId": "db5a6d48-5d36-461b-8864-4244e5f8cf8c"
+
+}
+
+Headers:
+
+Name  Description Type
+
+Date    string
+
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+
+Content-Type    string
+
+Example: application/json; charset=utf-8
+
+Content-Length    integer
+
+Example: 329
+
+Connection    string
+
+Example: keep-alive
+
+No links
+
+GET
+
+/whatsapp-cloud/settings
+
+Get phone number settings
+
+Get phone number settings
+
+This endpoint is used to get phone number related settings
+
+Parameters
+
+Try it out
+
+Name  Description
+
+Authorization
+
+string
+
+(header)
+
+Example : {{AUTH_TOKEN}}
+
+{{AUTH_TOKEN}}
+
+Responses
+
+Code  Description Links
+
+200
+
+OK
+
+Media type
+
+application/json
+
+Controls Accept header.
+
+Example Value
+
+Schema
+
+{
+
+  "calling": {
+
+    "status": "ENABLED",
+
+    "call_icon_visibility": "DEFAULT"
+
+  }
+
+}
+
+Headers:
+
+Name  Description Type
+
+Date    string
+
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+
+Content-Type    string
+
+Example: application/json; charset=utf-8
+
+Content-Length    integer
+
+Example: 329
+
+Connection    string
+
+Example: keep-alive
+
+No links
+
+400
+
+Bad Request
+
+Media type
+
+application/json
+
+Examples
+
+Auth token invalid
+
+Example Value
+
+Schema
+
+{
+
+  "error": "AUTH_TOKEN_INVALID",
+
+  "meta": {},
+
+  "message": "Auth-Token not valid or expired",
+
+  "traceId": "d7b61242-da15-410a-afdc-baf72b1edf64"
+
+}
+
+Headers:
+
+Name  Description Type
+
+Date    string
+
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+
+Content-Type    string
+
+Example: application/json; charset=utf-8
+
+Content-Length    integer
+
+Example: 329
+
+Connection    string
+
+Example: keep-alive
+
+No links
+
+401
+
+Unauthorized
+
+Media type
+
+application/json
+
+Example Value
+
+Schema
+
+{
+
+  "error": "AUTH_TOKEN_NOT_FOUND",
+
+  "meta": {},
+
+  "message": "Auth-Token not found in header",
+
+  "traceId": "d7b61242-da15-410a-afdc-baf72b1edf64"
+
+}
+
+Headers:
+
+Name  Description Type
+
+Date    string
+
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+
+Content-Type    string
+
+Example: application/json; charset=utf-8
+
+Content-Length    integer
+
+Example: 329
+
+Connection    string
+
+Example: keep-alive
+
+No links
+
+424
+
+Failed Dependency (WebDAV) (RFC 4918)
+
+For details on possible errors and their corresponding codes, refer to the Meta Error Codes documentation.
+
+Media type
+
+application/json
+
+Example Value
+
+Schema
+
+{
+
+  "error": "PHONE_NUMBER_SETTINGS",
+
+  "meta": {
+
+    "message": "(#10) Application does not have permission for this action",
+
+    "code": 10,
+
+    "type": "OAuthException",
+
+    "error_data": {
+
+      "messaging_product": "whatsapp",
+
+      "details": "Error while getting phone number settings"
+
+    },
+
+    "fbtrace_id": "AMuEbCNBbbfCNt1TGJqpj"
+
+  },
+
+  "message": "Error while getting phone number settings",
+
+  "traceId": "db5a6d48-5d36-461b-8864-4244e5f8cf8d"
+
+}
+
+Headers:
+
+Name  Description Type
+
+Date    string
+
+Example: Wed, 01 Feb 2023 13:01:36 GMT
+
+Content-Type    string
+
+Example: application/json; charset=utf-8
+
+Content-Length    integer
+
+Example: 329
+
+Connection    string
+
+Example: keep-alive
+
+No links
+
+Webhooks
+
+Overview
+
+Home
+
+Onboarding
+
+Guides
+
+Template Manager
+
+Campaign Manager
+
+Live Chat
+
+Legal
+
+Privacy Policy
+
+Terms & Conditions
+
+Data Retention and Destruction Policy
+
+Copyright © 2025 Tata Teleservices Ltd.
+
+Skip to main content
+
+Tata Telecom Logo
+
+WhatsApp
+
+RCS
+
+WhatsApp Lite Plan
+
+API Docs
+
+Session API
+
+Whatsapp Voice Call API
+
+RCS API
+
+Search...
+
+RCS API
+
+ 1.0.0
+
+OAS 3.0
+
+/openapi/rcs-api.json
+
+Servers
+
+https://api.omni.tatatelebusiness.com
+
+Authorize
+
+Messages
+
+POST
+
+/rcs/messages
+
+Send Message
+
+Send RCS Message
+
+Use this endpoint to send message to the users.
+
+RCS messages can be type of:
+
+Plain Text
+
+Plain Text with Suggested Replies
+
+Plain Text with Suggested Actions - Open Url
+
+Plain Text with Suggested Actions - Dialer Action
+
+Plain Text with Suggested Actions - Show Location
+
+Plain Text with Suggested Actions - Share Location
+
+Plain Text with Suggested Actions - Create Calendar Event
+
+Card
+
+Card with Suggested Replies
+
+Card with Suggested Actions - Open Url
+
+Card with Suggested Actions - Dialer Action
+
+Card with Suggested Actions - Show Location
+
+Card with Suggested Actions - Share Location
+
+Card with Suggested Actions - Create Calendar Event
+
+Carousel
+
+Carousel with Suggested Replies
+
+Carousel with Suggested Actions - Open Url
+
+Carousel with Suggested Actions - Dialer Action
+
+Carousel with Suggested Actions - Show Location
+
+Carousel with Suggested Actions - Share Location
+
+Carousel with Suggested Actions - Create Calendar Event
+
+Request
+
+Method: POST
+
+URL:rcs/messages
+
+Request Body For RCS Messages
+
+to: Message recipient number. Must be in international format that includes country code. For example: +919090909090. Country code is must to add.
+
+content: Content of the message.
+
+source: Source can be a label or string that indicates the platform or third party name from where the message is sent.
+
+Important Note:
+
+A rich card can include up to 4 buttons
+
+A carousel must include minimum 2 cards and maximum 10 cards
+
+Each card in the carousel can have a maximum of 4 buttons
+
+Response
+
+Upon successful execution, the response will include the ID of the sent message.
+
+id (string): The ID of the sent message.
+
+Parameters
+
+Try it out
+
+No parameters
+
+Request body
+
+application/json
+
+Examples:
+
+Plain Text
+
+Example Value
+
+Schema
+
+{
+
+  "to": "+91xxxxxxxxxx",
+
+  "content": {
+
+    "plainText": "hello!!!!"
+
+  },
+
+  "source": "api"
+
+}
+
+Responses
+
+Code  Description Links
+
+200
+
+OK
+
+Media type
+
+application/json
+
+Controls Accept header.
+
+Examples
+
+Success
+
+Example Value
+
+Schema
+
+{
+
+  "id": "cbc63f46-e9df-4722-94c5-47150f77eb49"
+
+}
+
+Headers:
+
+Name  Description Type
+
+content-type    string
+
+Example: application/json; charset=utf-8
+
+content-length    integer
+
+Example: 45
+
+Date    string
+
+Example: Fri, 02 Sep 2022 04:39:49 GMT
+
+Connection    string
+
+Example: keep-alive
+
+Keep-Alive    string
+
+Example: timeout=72
+
+No links
+
+400
+
+Bad Request
+
+Media type
+
+application/json
+
+Examples
+
+Invalid Phone Number
+
+Example Value
+
+Schema
+
+{
+
+  "title": "Invalid Phone number",
+
+  "code": 400
+
+}
+
+Headers:
+
+Name  Description Type
+
+content-type    string
+
+Example: application/json; charset=utf-8
+
+content-length    integer
+
+Example: 45
+
+Date    string
+
+Example: Fri, 25 Nov 2022 07:12:55 GMT
+
+Connection    string
+
+Example: keep-alive
+
+Keep-Alive    string
+
+Example: timeout=72
+
+No links
+
+401
+
+Unauthorized
+
+Media type
+
+application/json
+
+Example Value
+
+Schema
+
+{
+
+  "status": "ERROR",
+
+  "status_code": 401,
+
+  "error": "UNAUTHORIZED",
+
+  "error_code": "AUTH_FAILED",
+
+  "description": "authentication : JWT - Auth-Token not valid or expired"
+
+}
+
+Headers:
+
+Name  Description Type
+
+content-type    string
+
+Example: application/json; charset=utf-8
+
+content-length    integer
+
+Example: 45
+
+Date    string
+
+Example: Fri, 25 Nov 2022 07:12:55 GMT
+
+Connection    string
+
+Example: keep-alive
+
+Keep-Alive    string
+
+Example: timeout=61
+
+No links
+
+403
+
+Forbidden
+
+Media type
+
+application/json
+
+Example Value
+
+Schema
+
+{
+
+  "message": "Bot conversation limit is exceeded",
+
+  "error": "Forbidden",
+
+  "statusCode": 403
+
+}
+
+Headers:
+
+Name  Description Type
+
+content-type    string
+
+Example: application/json; charset=utf-8
+
+content-length    integer
+
+Example: 45
+
+Date    string
+
+Example: Fri, 25 Nov 2022 07:12:55 GMT
+
+Connection    string
+
+Example: keep-alive
+
+Keep-Alive    string
+
+Example: timeout=61
+
+No links
+
+Webhooks
+
+POST
+
+Messages
+
+Receive User Messages
+
+Receive User Message
+
+Receive messages from RCS when a user sends messages to you. Use this webhook to process and respond to these incoming user messages.
+
+Parameters
+
+Try it out
+
+No parameters
+
+Request body
+
+application/json
+
+Examples:
+
+PostBack
+
+Example Value
+
+{
+
+  "userPhoneNumber": "+91xxxxxxxxxx",
+
+  "botId": "65b7341d6b7825728b8bfeb9",
+
+  "metaData": {
+
+    "orgMsgId": "211d9bd5-7807-4dd4-bcda-6b9637cd68f2",
+
+    "orgMsgSendTime": "2024-11-06T11:28:22.136012Z"
+
+  },
+
+  "entityType": "USER_MESSAGE",
+
+  "entity": {
+
+    "messageId": "Mx9Yg7Je63R56OhZAPQgtO=w",
+
+    "sendTime": "2024-11-06T11:29:34.661916Z",
+
+    "text": "Hii",
+
+    "userFile": null,
+
+    "location": null,
+
+    "suggestionResponse": {
+
+      "postBack": {
+
+        "data": "suggestion_2"
+
+      },
+
+      "plainText": "Suggestion #2",
+
+      "type": "REPLY"
+
+    }
+
+  }
+
+}
+
+POST
+
+Callbacks
+
+Receive RCS Callbacks
+
+Receive RCS Callbacks
+
+Receive callbacks from RCS platform like read, delivered and failed.
+
+Parameters
+
+Try it out
+
+No parameters
+
+Request body
+
+application/json
+
+Examples:
+
+Typing
+
+Example Value
+
+{
+
+  "userPhoneNumber": "+91xxxxxxxxxx",
+
+  "botId": "65b7341d6b7825728b8bfeb9",
+
+  "entityType": "USER_EVENT",
+
+  "entity": {
+
+    "eventType": "TYPING",
+
+    "sendTime": "2024-11-06T11:36:16.829396Z",
+
+    "senderPhoneNumber": "+91xxxxxxxxxx",
+
+    "eventId": "MxMBiPU9UISyuxLdlJN8qPQw"
+
+  }
+
+}
+
+Overview
+
+Home
+
+Onboarding
+
+Guides
+
+Template Manager
+
+Campaign Manager
+
+Live Chat
+
+Legal
+
+Privacy Policy
+
+Terms & Conditions
+
+Data Retention and Destruction Policy
+
+Copyright © 2025 Tata Teleservices Ltd.
+
+use this and tell me how can i make alkl the mesages , new or previous ones appear on my crm and reply to them
+
+To make all your WhatsApp and RCS messages (new and previous ones) appear on your CRM and allow you to reply to them, you'll need to implement an integration strategy that leverages the provided APIs and webhooks.
+
+Here's a breakdown of the steps and concepts involved:
+
+Understanding the Core Components
+
+WhatsApp Voice Call APIs: This API set focuses on managing WhatsApp voice calls (initiating, accepting, rejecting, terminating) and does not directly handle text messages. The /whatsapp-cloud/calls endpoint and the associated connect, pre_accept, accept, reject, and terminate actions are for call control, not messaging. The settings endpoints (/whatsapp-cloud/settings) are for configuring call icon visibility and status.
+
+RCS API: This API is for sending various types of RCS messages (/rcs/messages).
+
+Webhooks (for both WhatsApp and RCS): This is the crucial part for getting incoming messages into your CRM. Webhooks allow the messaging platforms to send real-time notifications to your system whenever an event occurs (like a new incoming message, message status updates, etc.).
+
+High-Level Integration Strategy
+
+The general approach is to:
+
+Set up your CRM to receive data: Your CRM needs to have a way to ingest incoming messages. This usually involves:
+
+Custom API endpoints in your CRM: If your CRM supports it, you can create API endpoints that your webhooks will call.
+
+Middleware/Integration Platform: Use a tool like Zapier, Make (formerly Integromat), n8n, or a custom application layer that acts as a bridge between the messaging platform webhooks and your CRM's API.
+
+Configure Webhooks in the Messaging Platforms: Tell WhatsApp and RCS where to send notifications for incoming messages and status updates.
+
+Process Incoming Messages: When a webhook notification is received by your CRM (or middleware), parse the message content, identify the sender, and create/update a corresponding record (e.g., a "conversation" or "activity" tied to a contact) in your CRM.
+
+Enable Replying from CRM:
+
+CRM UI: Design your CRM's interface to allow agents to type and send replies.
+
+API Calls: When an agent sends a reply from the CRM, your CRM (or middleware) will then make an API call to the respective WhatsApp or RCS Send Message API to send the outgoing message.
+
+Detailed Steps and Considerations
+
+A. For WhatsApp Messages (assuming you're using the WhatsApp Business Platform, which is usually integrated with such APIs):
+
+Incoming Messages (New and Previous):
+
+Webhook Configuration: You'll need to set up webhooks for your WhatsApp Business Account (WABA). The Meta for Developers documentation (which these APIs likely leverage) outlines how to do this. You'll subscribe to events like messages to receive inbound messages.
+
+Webhook Endpoint: Create an HTTPS endpoint on your server or within your middleware that can receive POST requests from WhatsApp's webhooks.
+
+Parsing Webhook Payload: When a new message comes in, WhatsApp will send a JSON payload to your webhook endpoint. This payload will contain the message content, sender's phone number, message ID, and other relevant information.
+
+CRM Integration:
+
+Identify Contact: Use the sender's phone number from the webhook payload to look up an existing contact in your CRM. If no contact exists, you might want to create a new lead/contact.
+
+Create/Update Conversation: Create a new "conversation" record or an "activity" log item linked to the contact in your CRM. Store the message content, timestamp, and message ID.
+
+Display in CRM: Ensure your CRM's UI is designed to display these conversation threads clearly for your agents.
+
+Replying to WhatsApp Messages from CRM:
+
+CRM UI for Replies: Within your CRM, provide a text input field and a "Send" button associated with the WhatsApp conversation.
+
+Outbound API Call: When an agent sends a reply:
+
+Your CRM (or middleware) will need to call the WhatsApp Business API's "Send Message" endpoint. This is not explicitly detailed in the provided "WhatsApp Voice Call APIs" document, as that focuses on voice calls. You would typically use a separate WhatsApp Business Platform Message API for sending text messages.
+
+The request payload would include the recipient's phone number (from the original incoming message), the message content, and potentially other parameters like message type (text, media, template).
+
+Authorization: Remember to include your AUTH_TOKEN in the header of your API requests.
+
+B. For RCS Messages:
+
+Incoming Messages (New and Previous):
+
+Webhook Configuration: The provided RCS API documentation explicitly mentions "Receive User Messages" and "Receive RCS Callbacks" webhooks. You'll need to configure your webhook URL in the RCS platform.
+
+Webhook Endpoint: Similar to WhatsApp, create an HTTPS endpoint on your server or within your middleware to receive POST requests from the RCS webhooks.
+
+Parsing Webhook Payload: The "Receive User Message" webhook example shows a payload including userPhoneNumber, botId, messageId, sendTime, and text. This is the data you'll need to parse.
+
+CRM Integration:
+
+Identify Contact: Use the userPhoneNumber to find or create a contact in your CRM.
+
+Create/Update Conversation: Log the incoming RCS message as a conversation or activity linked to the contact in your CRM, storing all relevant details from the payload.
+
+Display in CRM: Make sure your CRM's interface can show these RCS message threads alongside other communication.
+
+Replying to RCS Messages from CRM:
+
+CRM UI for Replies: Implement a mechanism in your CRM for agents to compose and send RCS replies.
+
+Outbound API Call: When an agent sends a reply from the CRM:
+
+Your CRM (or middleware) will call the /rcs/messages endpoint.
+
+The request payload will include the to phone number, the content (e.g., plainText), and source.
+
+Authorization: Include your AUTH_TOKEN in the header.
+
+C. Handling Previous Messages (Historical Data):
+
+Retrieving Past Conversations: The provided API documentation for both WhatsApp Voice Call and RCS does not include endpoints for retrieving historical message data. This is a common limitation with messaging APIs, where webhooks primarily provide real-time updates for new events.
+
+Solution for Historical Data:
+
+Initial Sync (if supported by the platform): Some WhatsApp Business Solution Providers (BSPs) or RCS platforms might offer a way to export historical chat logs, which you could then import into your CRM. However, this is not standard across all APIs.
+
+Building a Historical Archive: As soon as you integrate the webhooks, you will start capturing all new incoming messages. For previous messages, if the platform doesn't offer a historical export, you might not be able to pull them directly through the API. Your best bet would be to ensure all future conversations are logged in your CRM once the integration is live.
+
+Key Considerations for Implementation:
+
+Authentication: Ensure your AUTH_TOKEN is securely managed and included in all API requests.
+
+Error Handling: Implement robust error handling for both inbound webhook processing and outbound API calls. The API responses show various error codes (400, 401, 424) that you need to account for.
+
+Rate Limits: Be aware of any rate limits imposed by the WhatsApp and RCS platforms to avoid getting blocked.
+
+Scalability: Design your webhook endpoint and CRM integration to handle a high volume of messages if you anticipate a lot of customer interactions.
+
+Message Types: The RCS API supports various message types (plain text, cards, carousels, etc.). Your CRM interface should ideally support sending and displaying these rich message formats for a better customer experience. WhatsApp also supports various message types beyond plain text (media, location, contacts, etc.), and your webhook processing should be able to handle these.
+
+SDP Exchange for Voice Calls (WhatsApp): If you intend to use the WhatsApp Voice Call APIs, remember that session.sdp_type and session.sdp are critical for WebRTC Session Description Protocol (SDP) exchange, which is complex and requires specialized WebRTC knowledge to implement a functional voice call system.
+
+CRM Capabilities: Your CRM needs to have the flexibility to integrate with external APIs, create custom objects (e.g., for conversations), and provide a user interface that can display and allow interaction with these messaging channels.
+
+Consent and Compliance: Always ensure you comply with data privacy regulations (e.g., GDPR, CCPA) and the messaging platform's policies (WhatsApp Business Policy, RCS Business Messaging Guidelines) regarding user consent for messaging.
+
+By carefully planning your webhook infrastructure and CRM integration points, you can effectively centralize your WhatsApp and RCS communications within your CRM for a unified customer view and efficient agent responses.

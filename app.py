@@ -16,13 +16,85 @@ OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 # OpenAI client
 client = OpenAI(api_key=OPENAI_API_KEY)
 
-# In-memory storage
+# Enhanced storage for comprehensive chat tracking
 chats_db = {}
 messages_db = {}
+all_webhook_data = []  # Store all webhook data for analysis
+all_contacts = {}  # Store all contacts that have ever messaged
 
 @app.route('/')
 def dashboard():
     return send_from_directory('static', 'dashboard.html')
+
+@app.route('/tata-chats')
+def tata_chats_page():
+    return send_from_directory('static', 'tata_chats.html')
+
+@app.route('/api/tata-chats', methods=['GET'])
+def get_tata_chats():
+    """Get ALL contacts and chats from webhook data"""
+    try:
+        all_chats = []
+        
+        # Add all contacts that have ever interacted
+        for phone, contact_info in all_contacts.items():
+            messages = messages_db.get(phone, [])
+            last_message = messages[-1] if messages else {'text': 'No recent messages', 'timestamp': contact_info.get('last_seen', '')}
+            
+            all_chats.append({
+                'phone': phone,
+                'name': contact_info.get('name', 'Unknown'),
+                'lastMessage': last_message.get('text', 'No recent messages'),
+                'timestamp': contact_info.get('last_seen', ''),
+                'status': 'Active' if messages else 'Contact only',
+                'messageCount': len(messages),
+                'totalInteractions': contact_info.get('total_interactions', 0),
+                'source': 'Webhook captured',
+                'lastMessageType': last_message.get('type', 'unknown')
+            })
+        
+        # Also add chats that might not be in contacts
+        for phone, chat_data in chats_db.items():
+            if phone not in all_contacts:
+                messages = messages_db.get(phone, [])
+                last_message = messages[-1] if messages else {'text': 'No messages', 'timestamp': ''}
+                
+                all_chats.append({
+                    'phone': phone,
+                    'name': 'Unknown',
+                    'lastMessage': last_message.get('text', 'No messages'),
+                    'timestamp': chat_data.get('timestamp', ''),
+                    'status': 'Chat only',
+                    'messageCount': len(messages),
+                    'totalInteractions': 1,
+                    'source': 'Chat data',
+                    'lastMessageType': last_message.get('type', 'unknown')
+                })
+        
+        # Remove duplicates and sort by timestamp
+        unique_chats = {chat['phone']: chat for chat in all_chats}
+        sorted_chats = sorted(unique_chats.values(), key=lambda x: x.get('timestamp', ''), reverse=True)
+        
+        return jsonify({
+            'success': True,
+            'chats': sorted_chats,
+            'total': len(sorted_chats),
+            'totalWebhooks': len(all_webhook_data),
+            'note': 'All contacts captured from webhook data - this includes everyone who has ever messaged your WhatsApp number'
+        })
+        
+    except Exception as e:
+        print(f"Error getting chats: {e}")
+        return jsonify({'success': False, 'error': str(e)})
+
+@app.route('/api/webhook-data', methods=['GET'])
+def get_webhook_data():
+    """Get raw webhook data for debugging"""
+    return jsonify({
+        'success': True,
+        'webhooks': all_webhook_data[-50:],  # Last 50 webhooks
+        'total': len(all_webhook_data)
+    })
 
 @app.route('/api/chats', methods=['GET'])
 def get_chats():
@@ -79,6 +151,11 @@ def get_chats():
     
     return jsonify({'chats': chat_list, 'stats': stats})
 
+@app.route('/api/messages/<phone>', methods=['GET'])
+def get_messages(phone):
+    messages = messages_db.get(phone, [])
+    return jsonify({'messages': messages})
+
 @app.route('/api/send-message', methods=['POST'])
 def api_send_message():
     data = request.get_json()
@@ -109,7 +186,7 @@ def api_send_message():
         
         return jsonify({'success': True})
     else:
-        return jsonify({'success': False, 'error': 'Failed to send message. User must message you first for session messages.'})
+        return jsonify({'success': False, 'error': 'Message sent to Tata API but user may not receive it. Users must opt-in first by messaging your WhatsApp number.'})
 
 @app.route('/api/send-template', methods=['POST'])
 def api_send_template():
@@ -141,7 +218,7 @@ def api_send_template():
         
         return jsonify({'success': True, 'message': 'Template message sent! User can now reply.'})
     else:
-        return jsonify({'success': False, 'error': 'Failed to send template message'})
+        return jsonify({'success': False, 'error': 'Template sent to Tata API but user may not receive it. Users must opt-in first.'})
 
 def send_session_message(phone, message):
     """Send session message using Tata API"""
@@ -206,6 +283,40 @@ def send_template_message(phone):
 def handle_webhook():
     data = request.get_json()
     print(f"Received webhook data: {data}")
+    
+    # Store all webhook data for comprehensive tracking
+    webhook_entry = {
+        'timestamp': datetime.now().isoformat(),
+        'data': data,
+        'raw_data': str(data)
+    }
+    all_webhook_data.append(webhook_entry)
+    
+    # Extract and store contact info from any webhook data
+    contact_phone = None
+    contact_name = None
+    
+    # Try different webhook formats
+    if data.get('contacts'):
+        for contact in data['contacts']:
+            contact_phone = contact.get('wa_id') or contact.get('phone')
+            contact_name = contact.get('profile', {}).get('name', 'Unknown')
+    
+    if data.get('messages'):
+        msg_data = data['messages']
+        contact_phone = msg_data.get('from') or contact_phone
+    
+    if data.get('from'):
+        contact_phone = data['from']
+    
+    # Store contact info
+    if contact_phone:
+        all_contacts[contact_phone] = {
+            'phone': contact_phone,
+            'name': contact_name or 'Unknown',
+            'last_seen': datetime.now().isoformat(),
+            'total_interactions': all_contacts.get(contact_phone, {}).get('total_interactions', 0) + 1
+        }
     
     # Handle Tata webhook format
     if data.get('messages'):

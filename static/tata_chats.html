@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tata Panel Chats</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f0f0f0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: #25d366; color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+        .chat-item { background: white; margin: 10px 0; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .chat-phone { font-weight: bold; color: #25d366; }
+        .chat-message { margin: 5px 0; color: #666; }
+        .chat-time { font-size: 12px; color: #999; }
+        .btn { background: #25d366; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .btn:hover { background: #128c7e; }
+        .loading { text-align: center; padding: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📱 All Tata Panel Chats</h1>
+            <p>Real-time chats from your Tata Telecom panel</p>
+        </div>
+
+        <div>
+            <button class="btn" onclick="loadTataChats()">Refresh Chats</button>
+            <button class="btn" onclick="importSampleContacts()">Import Sample Contacts</button>
+            <button class="btn" onclick="window.location.href='/'">Back to Dashboard</button>
+        </div>
+
+        <div id="loading" class="loading" style="display: none;">
+            Loading chats from Tata panel...
+        </div>
+
+        <div id="chats-container">
+            <!-- Chats will be loaded here -->
+        </div>
+    </div>
+
+    <script>
+        async function loadTataChats() {
+            const loading = document.getElementById('loading');
+            const container = document.getElementById('chats-container');
+            
+            loading.style.display = 'block';
+            container.innerHTML = '';
+            
+            try {
+                const response = await fetch('/api/tata-chats');
+                const data = await response.json();
+                
+                loading.style.display = 'none';
+                
+                if (data.success && data.chats.length > 0) {
+                    displayChats(data.chats);
+                } else {
+                    container.innerHTML = '<p>No chats found in Tata panel</p>';
+                }
+            } catch (error) {
+                loading.style.display = 'none';
+                container.innerHTML = '<p>Error loading chats: ' + error.message + '</p>';
+            }
+        }
+
+        function displayChats(chats) {
+            const container = document.getElementById('chats-container');
+            
+            chats.forEach(chat => {
+                const chatDiv = document.createElement('div');
+                chatDiv.className = 'chat-item';
+                chatDiv.innerHTML = `
+                    <div class="chat-phone">${chat.phone || chat.contact || 'Unknown'}</div>
+                    <div class="chat-message">${chat.lastMessage || 'No messages'}</div>
+                    <div class="chat-time">${new Date(chat.timestamp || chat.updatedAt).toLocaleString()}</div>
+                    <div style="margin-top: 10px;">
+                        <strong>Name:</strong> ${chat.name || 'Unknown'}
+                        <strong style="margin-left: 20px;">Status:</strong> ${chat.status || 'Active'}
+                        <strong style="margin-left: 20px;">Messages:</strong> ${chat.messageCount || 0}
+                        <strong style="margin-left: 20px;">Interactions:</strong> ${chat.totalInteractions || 0}
+                    </div>
+                `;
+                container.appendChild(chatDiv);
+            });
+        }
+
+        // Load chats on page load
+        loadTataChats();
+        
+        async function importSampleContacts() {
+            const sampleContacts = [
+                {phone: "+919876543210", name: "Customer 1", lastMessage: "Previous chat from Tata panel"},
+                {phone: "+918765432109", name: "Customer 2", lastMessage: "Old conversation"},
+                {phone: "+917654321098", name: "Support User", lastMessage: "Help request"}
+            ];
+            
+            for (const contact of sampleContacts) {
+                try {
+                    await fetch('/api/import-contact', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(contact)
+                    });
+                } catch (error) {
+                    console.error('Import error:', error);
+                }
+            }
+            
+            alert('Sample contacts imported! Refresh to see them.');
+            loadTataChats();
+        }
+
+        // Auto-refresh every 30 seconds
+        setInterval(loadTataChats, 30000);
+    </script>
+</body>
+</html>
