@@ -4,6 +4,7 @@ import os
 import json
 from datetime import datetime
 from dotenv import load_dotenv
+from openai import OpenAI
 
 load_dotenv()
 
@@ -12,6 +13,9 @@ app = Flask(__name__)
 # Configuration
 WHATSAPP_TOKEN = os.getenv('WHATSAPP_TOKEN')
 VERIFY_TOKEN = os.getenv('VERIFY_TOKEN')
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 # Unified message storage
 conversations = {}
@@ -27,18 +31,44 @@ def get_conversations():
     print(f"API call: returning {len(conversations)} conversations")
     return jsonify({'conversations': conversations})
 
-@app.route('/api/test-webhook', methods=['POST'])
-def test_webhook():
-    """Test endpoint to simulate incoming messages"""
+@app.route('/api/add-real-message', methods=['POST'])
+def add_real_message():
+    """Add a real message manually"""
     data = request.json
-    platform = data.get('platform', 'whatsapp')
-    phone = data.get('phone', '+919999999999')
-    message = data.get('message', 'Test message')
+    phone = data.get('phone')
+    message = data.get('message')
     
-    add_message(phone, message, 'received', platform, 'customer')
-    print(f"Test message added: {phone} via {platform}")
+    if phone and message:
+        add_message(phone, message, 'received', 'whatsapp', 'customer')
+        print(f"Real message added: {phone} - {message}")
+        return jsonify({'success': True, 'message': 'Real message added'})
     
-    return jsonify({'success': True, 'message': 'Test message added'})
+    return jsonify({'success': False, 'error': 'Phone and message required'})
+
+def send_message_via_tata(phone, text):
+    """Send message via Tata WhatsApp API"""
+    headers = {
+        "Authorization": f"Bearer {WHATSAPP_TOKEN}",
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "to": phone,
+        "type": "text",
+        "source": "external",
+        "text": {"body": text},
+        "metaData": {"custom_callback_data": "crm-reply"}
+    }
+    
+    try:
+        response = requests.post(
+            "https://wb.omni.tatatelebusiness.com/whatsapp-cloud/messages",
+            json=payload,
+            headers=headers
+        )
+        return response.status_code == 200
+    except Exception as e:
+        print(f"Send error: {e}")
+        return False
 
 @app.route('/api/send-message', methods=['POST'])
 def send_message():
@@ -49,26 +79,12 @@ def send_message():
     if not phone or not message:
         return jsonify({'success': False, 'error': 'Phone and message required'})
     
-    url = "https://wb.omni.tatatelebusiness.com/whatsapp-cloud/messages"
-    headers = {
-        'Authorization': f'Bearer {WHATSAPP_TOKEN}',
-        'Content-Type': 'application/json'
-    }
-    payload = {
-        "to": phone,
-        "type": "text",
-        "source": "crm",
-        "text": {"body": message}
-    }
-    
-    try:
-        response = requests.post(url, headers=headers, json=payload)
-        if response.status_code == 200:
-            add_message(phone, message, 'sent', 'whatsapp', 'agent')
-            return jsonify({'success': True, 'message': 'Message sent via Tata WhatsApp API'})
-        return jsonify({'success': False, 'error': f'Tata API error: {response.text}'})
-    except Exception as e:
-        return jsonify({'success': False, 'error': f'Send failed: {str(e)}'})
+    success = send_message_via_tata(phone, message)
+    if success:
+        add_message(phone, message, 'sent', 'whatsapp', 'agent')
+        return jsonify({'success': True})
+    else:
+        return jsonify({'success': False, 'error': 'Failed to send via Tata API'})
 
 
 
@@ -84,42 +100,58 @@ def verify_webhook():
     return 'Forbidden', 403
 
 @app.route('/webhook', methods=['POST'])
-def handle_webhook():
+def webhook():
     data = request.get_json()
     print(f"Webhook received: {json.dumps(data, indent=2)}")
     
     try:
-        # Handle different Tata webhook formats
-        phone = None
-        message = None
+        # Extract user data from Tata webhook
+        user_number = None
+        user_message = None
         
-        # Format 1: Standard Tata format
+        # Standard Tata format
         if data.get('contacts') and data.get('messages'):
-            phone = data['contacts'][0]['wa_id']
-            message_data = data['messages']
-            if message_data.get('text'):
-                message = message_data['text']['body']
-        
-        # Format 2: Direct format
+            user_number = data['contacts'][0]['wa_id']
+            user_message = data['messages']['text']['body']
+        # Alternative format
         elif data.get('from') and data.get('text'):
-            phone = data['from']
-            message = data['text'].get('body') if isinstance(data['text'], dict) else data['text']
+            user_number = data['from']
+            user_message = data['text'].get('body') if isinstance(data['text'], dict) else data['text']
         
-        # Format 3: Messages array
-        elif data.get('messages'):
-            msg_data = data['messages']
-            phone = msg_data.get('from')
-            if msg_data.get('text'):
-                message = msg_data['text'].get('body')
+        if not user_number or not user_message:
+            return jsonify({"error": "Malformed incoming data"}), 400
         
-        if phone and message:
-            add_message(phone, message, 'received', 'whatsapp', 'customer')
-            print(f"Real message added: {phone} - {message}")
+        # Save incoming message
+        add_message(user_number, user_message, 'received', 'whatsapp', 'customer')
+        print(f"Real message saved: {user_number} - {user_message}")
+        
+        # Generate AI reply
+        try:
+            response = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": "You are a helpful WhatsApp assistant. Keep responses brief and friendly."},
+                    {"role": "user", "content": user_message}
+                ],
+                max_tokens=150
+            )
             
+            ai_reply = response.choices[0].message.content
+            
+            # Send AI reply via Tata API
+            send_success = send_message_via_tata(user_number, ai_reply)
+            if send_success:
+                add_message(user_number, ai_reply, 'sent', 'whatsapp', 'ai')
+                print(f"AI reply sent: {ai_reply}")
+                
+        except Exception as ai_error:
+            print(f"AI error: {ai_error}")
+        
+        return jsonify({"status": "received"}), 200
+        
     except Exception as e:
         print(f"Webhook error: {e}")
-    
-    return jsonify({'status': 'success'})
+        return jsonify({"error": str(e)}), 500
 
 # RCS Webhook
 @app.route('/webhook/rcs', methods=['POST'])
@@ -144,7 +176,7 @@ def add_message(phone, message, direction, platform, sender_type):
             'contact': phone,
             'messages': [],
             'last_activity': datetime.now().isoformat(),
-            'platforms': set()
+            'platforms': []
         }
     
     conversations[phone]['messages'].append({
@@ -155,9 +187,9 @@ def add_message(phone, message, direction, platform, sender_type):
         'timestamp': datetime.now().isoformat()
     })
     
-    conversations[phone]['platforms'].add(platform)
+    if platform not in conversations[phone]['platforms']:
+        conversations[phone]['platforms'].append(platform)
     conversations[phone]['last_activity'] = datetime.now().isoformat()
-    conversations[phone]['platforms'] = list(conversations[phone]['platforms'])
     
     print(f"Message added: {phone} ({platform}) - {message[:50]}...")
 
@@ -203,7 +235,9 @@ CRM_HTML = '''
             <div class="contacts-panel">
                 <h3>Conversations</h3>
                 <button onclick="loadConversations()" style="margin-bottom: 10px; padding: 8px 15px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Refresh</button>
-                <button onclick="addTestMessage()" style="margin-bottom: 15px; padding: 8px 15px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Add Test Message</button>
+                <input type="text" id="testPhone" placeholder="+919999999999" style="width: 100%; margin-bottom: 5px; padding: 5px;">
+                <input type="text" id="testMessage" placeholder="Enter message from user" style="width: 100%; margin-bottom: 5px; padding: 5px;">
+                <button onclick="simulateIncoming()" style="margin-bottom: 15px; padding: 8px 15px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; width: 100%;">Simulate User Reply</button>
                 <div id="contactsList"></div>
             </div>
             
@@ -331,7 +365,7 @@ CRM_HTML = '''
                 if (data.success) {
                     input.value = '';
                     loadConversations();
-                    alert('Message sent via Tata WhatsApp!');
+                    setTimeout(() => displayMessages(), 500);
                 } else {
                     alert('Failed to send: ' + (data.error || 'Unknown error'));
                 }
@@ -344,33 +378,34 @@ CRM_HTML = '''
             }
         }
 
-        function addTestMessage() {
-            const phone = '+91' + Math.floor(Math.random() * 9000000000 + 1000000000);
-            const messages = [
-                'Hello, I need help!',
-                'What are your business hours?',
-                'Can you help me with my order?',
-                'I have a question about pricing',
-                'Thank you for your service'
-            ];
-            const platforms = ['whatsapp', 'rcs'];
+        function simulateIncoming() {
+            const phone = document.getElementById('testPhone').value.trim();
+            const message = document.getElementById('testMessage').value.trim();
             
-            const testData = {
-                phone: phone,
-                message: messages[Math.floor(Math.random() * messages.length)],
-                platform: platforms[Math.floor(Math.random() * platforms.length)]
-            };
+            if (!phone || !message) {
+                alert('Please enter both phone number and message');
+                return;
+            }
             
-            fetch('/api/test-webhook', {
+            // Simulate webhook call
+            fetch('/webhook', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(testData)
+                body: JSON.stringify({
+                    from: phone,
+                    text: { body: message }
+                })
             })
             .then(r => r.json())
             .then(data => {
-                if (data.success) {
-                    loadConversations();
-                }
+                document.getElementById('testPhone').value = '';
+                document.getElementById('testMessage').value = '';
+                loadConversations();
+                setTimeout(() => {
+                    if (currentContact === phone) {
+                        displayMessages();
+                    }
+                }, 1000);
             });
         }
 
